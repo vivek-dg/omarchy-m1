@@ -90,6 +90,7 @@ catch_errors() {
   clear_logo
   show_cursor
 
+
   gum style --foreground 1 --padding "1 0 1 $PADDING_LEFT" "Omarchy installation stopped!"
   show_log_tail
 
@@ -98,7 +99,13 @@ catch_errors() {
 
   gum style "$QR_CODE"
   echo
-  gum style "Get help from the community via QR code or at https://discord.gg/tXFUdasqhY"
+  gum style "Get help from the community via QR code, at https://discord.gg/tXFUdasqhY, or contact @tiredkebab on X (Twitter)."
+  echo
+  gum confirm "Would you like to continue the installation anyway? (Not recommended)" && {
+    echo -e "\e[33m[Omarchy] Continuing at your own risk...\e[0m"
+    ERROR_HANDLING=false
+    return
+  }
 
   # Offer options menu
   while true; do
@@ -116,7 +123,7 @@ catch_errors() {
 
     # Add remaining options
     options+=("View full log")
-    options+=("Exit")
+  options+=("Exit (recommended)")
 
     choice=$(gum choose "${options[@]}" --header "What would you like to do?" --height 6 --padding "1 $PADDING_LEFT")
 
@@ -135,7 +142,8 @@ catch_errors() {
     "Upload log for support")
       omarchy-upload-install-log
       ;;
-    "Exit" | "")
+    "Exit (recommended)" | "")
+      echo -e "\e[33m[Omarchy] Installation aborted. For support, contact @tiredkebab on X (Twitter).\e[0m"
       exit 1
       ;;
     esac
