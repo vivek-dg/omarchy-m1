@@ -15,8 +15,11 @@ done
 # Must not be running as root
 [ "$EUID" -eq 0 ] && abort "Running as root (not user)"
 
-# Must be x86 only to fully work
-[ "$(uname -m)" != "x86_64" ] && abort "x86_64 CPU"
+# Must be x86_64 or ARM64 (aarch64)
+ARCH="$(uname -m)"
+if [[ "$ARCH" != "x86_64" && "$ARCH" != "aarch64" ]]; then
+  abort "x86_64 or ARM64 (aarch64) CPU"
+fi
 
 # Must not have Gnome or KDE already install
 pacman -Qe gnome-shell &>/dev/null && abort "Fresh + Vanilla Arch"

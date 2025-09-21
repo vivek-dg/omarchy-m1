@@ -1,10 +1,28 @@
 # Omarchy core package list installed via install/packages.sh
 # This file is also used by the ISO builder when determining needs
 
-1password-beta
-1password-cli
+
+# --- Omarchy core package list ---
+# The following packages are commented out or replaced for Apple Silicon (ARM64/Asahi):
+# - NVIDIA, Broadcom, T2, and Intel-specific drivers are not available or needed
+# - Some packages may not be available on ARM64 (e.g., 1password-beta, signal-desktop, spotify)
+#
+# Apple Silicon (M1/M2/M3) specific packages (Asahi Linux):
+linux-asahi
+linux-asahi-headers
+asahi-fwextract
+mesa
+mesa-utils
+mesa-demos
+fwupd
+nvme-cli
+grub
+efibootmgr
+
+# Uncomment or add other packages as they become available for ARM64
+#1password-beta
+#1password-cli
 alacritty
-asdcontrol-git
 avahi
 bash-completion
 bat
@@ -92,9 +110,9 @@ python-terminaltexteffects
 qt5-wayland
 ripgrep
 satty
-signal-desktop
+#signal-desktop
 slurp
-spotify
+#spotify
 starship
 sushi
 swaybg
