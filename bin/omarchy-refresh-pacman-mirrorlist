@@ -1,3 +1,42 @@
 #!/bin/bash
 
-sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist /etc/pacman.d/mirrorlist
+# Safe mirrorlist updater
+# Usage: omarchy-refresh-pacman-mirrorlist [--force] [--backup]
+
+SRC="$HOME/.local/share/omarchy/default/pacman/mirrorlist"
+DEST="/etc/pacman.d/mirrorlist"
+
+force=0
+backup=0
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		--force) force=1; shift ;;
+		--backup) backup=1; shift ;;
+		*) shift ;;
+	esac
+done
+
+if [[ ! -f "$SRC" ]]; then
+	echo "[ERROR] Source mirrorlist not found: $SRC"
+	exit 1
+fi
+
+if [[ -f "$DEST" && $force -eq 0 && -z "${OMARCHY_FORCE_MIRROR_OVERWRITE:-}" ]]; then
+	if cmp -s "$SRC" "$DEST"; then
+		echo "[OK] Mirrorlist already up-to-date; not overwriting."
+		exit 0
+	else
+		echo "[SKIP] Existing mirrorlist present at $DEST; not overwriting."
+		echo "        To force overwrite set OMARCHY_FORCE_MIRROR_OVERWRITE=1 or run with --force."
+		exit 0
+	fi
+fi
+
+if [[ -f "$DEST" && $backup -eq 1 ]]; then
+	sudo cp "$DEST" "$DEST.bak.$(date +%Y%m%d%H%M%S)"
+	echo "[INFO] Backed up existing mirrorlist to $DEST.bak.*"
+fi
+
+sudo cp "$SRC" "$DEST"
+echo "[OK] Updated mirrorlist: $DEST"
+
