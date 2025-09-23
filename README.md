@@ -1,3 +1,6 @@
+
+<img width="2560" height="1600" alt="screenshot-2025-09-23_23-46-46" src="https://github.com/user-attachments/assets/9d38cd95-ff1c-4bde-8756-52a94f391a9c" />
+
 # Omarchy-mac installation steps
 
 _Disclaimer: This guide is intended for Apple Silicon MacBooks and has only been tested on the M1 variant released in 2020. It is advised that you follow the instructions in the manual very carefully lest you risk bricking the MacBook or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
