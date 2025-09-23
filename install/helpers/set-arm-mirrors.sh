@@ -6,12 +6,14 @@ MIRRORLIST_FILE="/etc/pacman.d/mirrorlist"
 COUNTRY=${1:-us}
 FORCE=0
 BACKUP=0
-if [[ "$2" == "--force" ]]; then
-  FORCE=1
-fi
-if [[ "$2" == "--backup" ]]; then
-  BACKUP=1
-fi
+shift || true
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1; shift ;;
+    --backup) BACKUP=1; shift ;;
+    *) shift ;;
+  esac
+done
 
 # List of some fast Arch Linux ARM mirrors by country
 case "$COUNTRY" in
@@ -36,8 +38,22 @@ case "$COUNTRY" in
 esac
 
 if [[ -f "$MIRRORLIST_FILE" && $FORCE -eq 0 && -z "${OMARCHY_FORCE_MIRROR_OVERWRITE:-}" ]]; then
-  echo "[SKIP] Existing mirrorlist found at $MIRRORLIST_FILE; not overwriting. Use --force or set OMARCHY_FORCE_MIRROR_OVERWRITE=1 to override."
+  # Merge behavior: append the ARM mirror Server line only if not already present
+  existing=$(grep -E '^\s*Server\s*=' "$MIRRORLIST_FILE" || true)
+  if echo "$existing" | grep -F -q "$MIRROR"; then
+    echo "[OK] ARM mirror already present in $MIRRORLIST_FILE; not changing file."
+  else
+    if [[ $BACKUP -eq 1 ]]; then
+      sudo cp "$MIRRORLIST_FILE" "$MIRRORLIST_FILE.bak.$(date +%Y%m%d%H%M%S)"
+      echo "[INFO] Backed up existing mirrorlist to $MIRRORLIST_FILE.bak.*"
+    fi
+    echo "$MIRROR" | sudo tee -a "$MIRRORLIST_FILE" > /dev/null
+    echo "[OK] Appended ARM mirror to $MIRRORLIST_FILE: $MIRROR"
+    echo "Updating package database..."
+    sudo pacman -Syy
+  fi
 else
+  # Force overwrite or mirrorlist missing -> write the single ARM server entry
   if [[ -f "$MIRRORLIST_FILE" && $BACKUP -eq 1 ]]; then
     sudo cp "$MIRRORLIST_FILE" "$MIRRORLIST_FILE.bak.$(date +%Y%m%d%H%M%S)"
     echo "[INFO] Backed up existing mirrorlist to $MIRRORLIST_FILE.bak.*"
