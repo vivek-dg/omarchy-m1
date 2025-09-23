@@ -1,12 +1,22 @@
-# Omarchy
+# Omarchy-mac installation steps
 
-Turn a fresh Arch installation into a fully-configured, beautiful, and modern web development system based on Hyprland by running a single command. That's the one-line pitch for Omarchy (like it was for Omakub). No need to write bespoke configs for every essential tool just to get started or to be up on all the latest command-line tools. Omarchy is an opinionated take on what Linux can be at its best.
-
-Read more at [omarchy.org](https://omarchy.org).
-
-## License
-
-Omarchy is released under the [MIT License](https://opensource.org/licenses/MIT).
+Install Arch minimal from Asahi Alarm
+Log into root - username and password root
+Nmtui
+pacman -S sudo git —needed base-devel
+useradd -m -G wheel <username>
+passwd <username>
+Set password
+EDITOR=nano visudo
+Uncomment %wheel ALL(ALL:ALL) ALL
+Ctrl O, Enter, Ctrl X
+su - username 
+git clone and makepkg yay
+create .local/share dirs
+Clone omarchy-mac
+bash install.sh
+If mirrors break, run bash fix-mirrors.sh
+Run install.sh again
 
 ## Mirrorlist updates
 
