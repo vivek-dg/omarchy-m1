@@ -35,11 +35,6 @@ omarchy-lazyvim
 polkit-gnome
 qt5-wayland
 waybar
-
-# --- Omarchy optional package list ---
-# These packages are optional and can be selected interactively at install time:
-# (Do not remove this section header, it is used by the installer script)
-OPTIONAL:
 btop
 cargo
 clang
