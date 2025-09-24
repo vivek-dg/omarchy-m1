@@ -8,6 +8,7 @@
 linux-asahi
 linux-asahi-headers
 asahi-fwextract
+asahi-desktop-meta
 mesa
 mesa-utils
 mesa-demos
