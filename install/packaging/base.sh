@@ -32,26 +32,23 @@ packages=("${core_packages[@]}" "${selected_optional_pkgs[@]}")
 echo "\e[34m[Omarchy] Checking package availability...\e[0m"
 unavailable_pkgs=()
 for pkg in "${packages[@]}"; do
-	if ! pacman -Si "$pkg" &>/dev/null; then
+	if ! check_package_availability "$pkg"; then
 		unavailable_pkgs+=("$pkg")
 	fi
 done
 if (( ${#unavailable_pkgs[@]} > 0 )); then
-	echo "\e[33m[Warning] The following packages are likely unavailable for your architecture and will be skipped:\e[0m"
+	echo "\e[33m[Warning] The following packages are likely unavailable and will be skipped:\e[0m"
 	for pkg in "${unavailable_pkgs[@]}"; do
 		echo "  - $pkg"
 	done
 	echo
 fi
 
-# Install all base packages, skipping unavailable ones and listing failures at the end
+# Install all base packages, trying AUR helpers as fallbacks
 failed_packages=()
 for pkg in "${packages[@]}"; do
-	if pacman -Si "$pkg" &>/dev/null; then
-		if sudo pacman -S --noconfirm --needed "$pkg"; then
-			echo "[OK] $pkg"
-		else
-			echo "[FAILED] $pkg"
+	if check_package_availability "$pkg"; then
+		if ! try_install_package "$pkg"; then
 			failed_packages+=("$pkg")
 		fi
 	else
