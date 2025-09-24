@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# Architecture-aware walker installation script
+# This script handles walker installation for both x86_64 and aarch64 architectures
+
+ARCH="$(uname -m)"
+
+echo "Installing walker for architecture: $ARCH"
+
+install_walker() {
+    # Try walker-bin first (available on x86_64 official repos)
+    if pacman -Si walker-bin &>/dev/null; then
+        echo "Installing walker-bin from official repositories..."
+        if omarchy-pkg-add walker-bin; then
+            echo "Successfully installed walker-bin"
+            return 0
+        fi
+    fi
+    
+    # Fall back to walker from official repos
+    if pacman -Si walker &>/dev/null; then
+        echo "Installing walker from official repositories..."
+        if omarchy-pkg-add walker; then
+            echo "Successfully installed walker"
+            return 0
+        fi
+    fi
+    
+    # Fall back to AUR installation (typically needed for aarch64)
+    echo "Official repositories don't have walker packages available."
+    echo "Attempting installation from AUR..."
+    
+    if command -v yay &>/dev/null; then
+        # Try walker-bin from AUR first
+        if yay -Si walker-bin &>/dev/null; then
+            echo "Installing walker-bin from AUR..."
+            if yay -S --noconfirm walker-bin; then
+                echo "Successfully installed walker-bin from AUR"
+                return 0
+            fi
+        fi
+        
+        # Try walker from AUR
+        if yay -Si walker &>/dev/null; then
+            echo "Installing walker from AUR..."
+            if yay -S --noconfirm walker; then
+                echo "Successfully installed walker from AUR"
+                return 0
+            fi
+        fi
+        
+        # Try walker-git as last resort
+        echo "Trying walker-git from AUR as final fallback..."
+        if yay -S --noconfirm walker-git; then
+            echo "Successfully installed walker-git from AUR"
+            return 0
+        fi
+    else
+        echo "ERROR: yay is not available for AUR installations"
+        echo "Please install yay first: pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si"
+        return 1
+    fi
+    
+    echo "ERROR: Failed to install walker from any source"
+    return 1
+}
+
+# Install walker
+if install_walker; then
+    echo "Walker installation completed successfully"
+    
+    # Ensure libqalculate is also installed (needed for calculator functionality)
+    if ! pacman -Q libqalculate &>/dev/null; then
+        echo "Installing libqalculate dependency..."
+        omarchy-pkg-add libqalculate
+    fi
+    
+    # Setup walker configuration if it doesn't exist
+    if [[ ! -d ~/.config/walker ]]; then
+        echo "Setting up walker configuration..."
+        mkdir -p ~/.config/walker
+        if [[ -d ~/.local/share/omarchy/config/walker ]]; then
+            cp -r ~/.local/share/omarchy/config/walker/* ~/.config/walker/
+            echo "Walker configuration deployed from omarchy defaults"
+        fi
+    fi
+    
+    echo "Walker installation and configuration complete"
+    exit 0
+else
+    echo "ERROR: Walker installation failed"
+    exit 1
+fi
