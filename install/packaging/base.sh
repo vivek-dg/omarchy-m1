@@ -74,20 +74,5 @@ else
 	echo "\e[32mAll packages installed successfully!\e[0m"
 fi
 
-# Install walker with architecture-aware method
-echo
-echo "\e[34m[Omarchy] Installing walker with architecture-aware method...\e[0m"
-if command -v omarchy-pkg-walker-install &>/dev/null; then
-	if omarchy-pkg-walker-install; then
-		echo "[OK] walker installed successfully"
-	else
-		echo "[FAILED] walker installation failed"
-		failed_packages+=("walker (architecture-specific installation failed)")
-	fi
-else
-	echo "[FAILED] omarchy-pkg-walker-install script not found"
-	failed_packages+=("walker (installation script missing)")
-fi
-
 echo
 echo "[Omarchy] Installation complete. For troubleshooting, see the install log. For support, contact @tiredkebab on X (Twitter)."

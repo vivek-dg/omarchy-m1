@@ -121,7 +121,7 @@ ufw
 ufw-docker
 unzip
 uwsm
-# walker-bin (installed via omarchy-pkg-walker-install for arch compatibility)
+walker-bin
 wf-recorder
 whois
 wireless-regdb
