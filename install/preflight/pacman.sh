@@ -18,8 +18,4 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
 
   # Refresh all repos
   sudo pacman -Syu --noconfirm
-
-  # Set up AUR helpers (yay and paru)
-  source "$OMARCHY_INSTALL/helpers/aur-setup.sh"
-  setup_aur_helpers
 fi
