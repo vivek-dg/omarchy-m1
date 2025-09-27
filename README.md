@@ -3,7 +3,7 @@
 
 # Omarchy-mac installation steps
 
-_Disclaimer: This guide is intended for Apple Silicon MacBooks and has only been tested on the M1 variant released in 2020. It is advised that you follow the instructions in the manual very carefully lest you risk bricking the MacBook or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
+_Disclaimer: This guide is intended for Apple Silicon MacBooks M1/M2 and has only been tested on the M1 variant released in 2020. It is advised that you follow the instructions in the manual very carefully lest you risk bricking the MacBook or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
 
 ## Step 1: Install Arch minimal from Asahi Alarm
 
@@ -25,7 +25,7 @@ After installation, boot into Arch Linux and perform the initial setup:
 1. **Log into root** - username and password: `root`
 2. **Configure wifi** - Run `nmtui` for network setup
 3. **Update system** - Run `pacman -Syu`
-4. **Install essential packages** - Run `pacman -S sudo git base-devel`
+4. **Install essential packages** - Run `pacman -S sudo git base-devel neovim chromium`
 
 ## Step 3: Create User Account
 
