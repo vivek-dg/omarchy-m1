@@ -87,7 +87,7 @@ New updates coming soon...
 
 (Find me on X/Twitter here - [https://x.com/tiredkebab](https://x.com/tiredkebab) )
 
-- If you want to support - [coff.ee/malik2015no](coff.ee/malik2015no)
+- If you want to support - [buymeacoffee.com/malik2015no](coff.ee/malik2015no)
 
 
 
