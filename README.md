@@ -87,8 +87,7 @@ New updates coming soon...
 
 (Find me on X/Twitter here - [https://x.com/tiredkebab](https://x.com/tiredkebab) )
 
-- If you want to support - [buymeacoffee.com/malik2015no](buymeacoffee.com/malik2015no)
-
+- If you want to support me -  [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/malik2015no)
 
 
 ## Acknowledgements
