@@ -122,7 +122,7 @@ ufw
 ufw-docker
 unzip
 uwsm
-walker-bin
+walker
 wf-recorder
 whois
 wireless-regdb

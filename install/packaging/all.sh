@@ -1,3 +1,4 @@
+run_logged $OMARCHY_INSTALL/packaging/aur-helpers.sh
 run_logged $OMARCHY_INSTALL/packaging/base.sh
 run_logged $OMARCHY_INSTALL/packaging/fonts.sh
 run_logged $OMARCHY_INSTALL/packaging/lazyvim.sh
