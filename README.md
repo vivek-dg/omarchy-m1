@@ -1,5 +1,4 @@
-
-<img width="2560" height="1600" alt="screenshot-2025-09-23_23-46-46" src="https://github.com/user-attachments/assets/9d38cd95-ff1c-4bde-8756-52a94f391a9c" />
+<img width="2560" height="1600" alt="screenshot-2025-09-28_11-19-38" src="https://github.com/user-attachments/assets/dbce832d-4054-4fbb-8057-e521be4859f8" />
 
 # Omarchy-mac installation steps
 
