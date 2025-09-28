@@ -5,5 +5,8 @@ if brightnessctl --list | grep -q "kbd_backlight"; then
   echo "Setting keyboard backlight to 50%"
   brightnessctl --device=kbd_backlight set 50%
 else
-  echo "No keyboard backlight device found, skipping"
+  sudo pacman -S brightnessctl --noconfirm
+  brightnessctl --device=kbd_backlight set 50%
+  echo "Setting keyboard backlight to 50%"
 fi
+
