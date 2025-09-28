@@ -64,6 +64,14 @@ As your new user, set up the AUR helper and install Omarchy:
 
 **Note**: If mirrors break during installation, run `bash fix-mirrors.sh` then run `install.sh` again.
 
+## Omarchy commands to change themes and wallpaper:
+
+To change themes, use this command: `omarchy-theme-set <theme name>`
+Example: `omarchy-theme-set nord` to set Nord as your theme.
+Themes: `nord, catppuccin, matte-black, catppuccin-latte, everforest, osaka-jade, ristretto, kanagawa, gruvbox, rose-pine, tokyo-night`
+
+To change wallpaper, press `Ctrl` + `Cmd` + `Space`
+
 ## Mirrorlist updates
 
 Omarchy may provide a recommended mirrorlist during install, but it will not silently overwrite an existing system mirrorlist. The installer and helper scripts follow a safe default:
