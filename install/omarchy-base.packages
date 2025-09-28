@@ -4,7 +4,11 @@
 
 
 # --- Omarchy core package list ---
-# These packages are always installed (required for a working system):
+# The following packages are commented out or replaced for Apple Silicon (ARM64/Asahi):
+# - NVIDIA, Broadcom, T2, and Intel-specific drivers are not available or needed
+# - Some packages may not be available on ARM64 (e.g., 1password-beta, signal-desktop, spotify)
+#
+# Apple Silicon (M1/M2/M3) specific packages (Asahi Linux):
 linux-asahi
 linux-asahi-headers
 asahi-fwextract
@@ -16,26 +20,17 @@ fwupd
 nvme-cli
 grub
 efibootmgr
+
+# Uncomment or add other packages as they become available for ARM64
+#1password-beta
+#1password-cli
 alacritty
+asdcontrol-git
 avahi
 bash-completion
 bat
 blueberry
 brightnessctl
-fcitx5
-fcitx5-gtk
-fcitx5-qt
-fontconfig
-gum
-iwd
-nautilus
-noto-fonts
-nvim
-omarchy-chromium
-omarchy-lazyvim
-polkit-gnome
-qt5-wayland
-waybar
 btop
 cargo
 clang
@@ -50,13 +45,18 @@ dust
 evince
 eza
 fastfetch
+fcitx5
+fcitx5-gtk
+fcitx5-qt
 fd
 ffmpegthumbnailer
+fontconfig
 fzf
 github-cli
 gnome-calculator
 gnome-keyring
 gnome-themes-extra
+gum
 gvfs-mtp
 gvfs-smb
 hypridle
@@ -70,12 +70,14 @@ imagemagick
 impala
 imv
 inetutils
+iwd
 jq
 kdenlive
 kvantum-qt5
 lazydocker
 lazygit
 less
+libyaml
 libqalculate
 libreoffice
 llvm
@@ -84,23 +86,31 @@ luarocks
 mako
 man
 mariadb-libs
+mise
 mpv
+nautilus
+noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
+nvim
 obs-studio
 obsidian
+omarchy-chromium
+omarchy-lazyvim
 pamixer
 pinta
 playerctl
 plocate
 plymouth
+polkit-gnome
 postgresql-libs
 power-profiles-daemon
 python-gobject
 python-poetry-core
 python-terminaltexteffects
+qt5-wayland
 ripgrep
 satty
 #signal-desktop
