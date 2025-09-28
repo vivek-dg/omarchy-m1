@@ -64,6 +64,13 @@ As your new user, set up the AUR helper and install Omarchy:
 
 **Note**: If mirrors break during installation, run `bash fix-mirrors.sh` then run `install.sh` again.
 
+
+### Omarchy Menu
+
+_As Walker is not fully aarch64 compatible, you can install __Omarchy Mac Menu__ from the following repo_
+- [https://github.com/tayowrld/omarchy-mac-menu](https://github.com/tayowrld/omarchy-mac-menu)
+- Follow the instruction and remember to install fuzzel - ```sudo pacman -S fuzzel```
+
 ## Omarchy commands to change themes and wallpaper:
 
 To change themes, use this command: `omarchy-theme-set <theme name>`
@@ -102,3 +109,7 @@ Join [Omarchy Mac Discord server](https://discord.gg/KNQRk7dMzy)
 ## Acknowledgements
 
 Thanks @dhh for creating Omarchy.
+
+## Contributors
+
+- Thank you [IvanKurbakov](https://github.com/tayowrld) for making [Omarchy Mac Menu](https://github.com/tayowrld/omarchy-mac-menu)
