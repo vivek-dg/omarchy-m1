@@ -1,7 +1,33 @@
 source "$OMARCHY_INSTALL/helpers/packages.sh"
 
-# Read all required packages from omarchy-base.packages
-mapfile -t packages < <(grep -v '^#' "$OMARCHY_INSTALL/omarchy-base.packages" | grep -v '^$')
+# Read core and optional packages from omarchy-base.packages
+core_packages=()
+optional_packages=()
+in_optional=0
+while IFS= read -r line; do
+	[[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
+	if [[ "$line" == "OPTIONAL:" ]]; then
+		in_optional=1
+		continue
+	fi
+	if (( in_optional )); then
+		optional_packages+=("$line")
+	else
+		core_packages+=("$line")
+	fi
+done < "$OMARCHY_INSTALL/omarchy-base.packages"
+
+# Interactive selection for optional packages using gum
+if command -v gum &>/dev/null && (( ${#optional_packages[@]} > 0 )); then
+	echo "\e[34m[Omarchy] Select optional packages to install (use space to select, enter to confirm):\e[0m"
+	selected_optional=$(printf '%s\n' "${optional_packages[@]}" | gum choose --no-limit --height 20)
+	mapfile -t selected_optional_pkgs <<< "$selected_optional"
+else
+	selected_optional_pkgs=("${optional_packages[@]}")
+fi
+
+# Combine core and selected optional packages
+packages=("${core_packages[@]}" "${selected_optional_pkgs[@]}")
 
 # Pre-Install Compatibility Check
 echo "\e[34m[Omarchy] Checking package availability...\e[0m"
