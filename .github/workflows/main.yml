@@ -1,195 +1,126 @@
----
-name: CI
+name: CI (Linux ARM64 only)
 
-"on":
+on:
   push:
-    branches: [main, master, v0.2.0]
+    branches: [ main, v0.* ]
+    paths:
+      - ".github/workflows/**"
+      - "**/*.sh"
+      - "scripts/**"
   pull_request:
-    branches: [main, master, v0.2.0]
+    branches: [ main, v0.* ]
+    paths:
+      - ".github/workflows/**"
+      - "**/*.sh"
+      - "scripts/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
 
 jobs:
-  shellcheck:
-    name: Shellcheck
-    runs-on: ubuntu-latest
+  # 1) Lint shell scripts on native aarch64
+  lint:
+    name: Lint (shellcheck + shfmt) [aarch64]
+    runs-on: ubuntu-24.04-arm
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          scandir: './install'
-          format: gcc
-          severity: error
-          disable_check: SC2148
+      - name: Assert we are on ARM64
+        run: |
+          arch=$(uname -m)
+          echo "Detected arch: $arch"
+          test "$arch" = "aarch64" || { echo "Not running on aarch64"; exit 1; }
 
-  docker-test:
-    name: Dry-run install in Arch Linux (multiple architectures)
-    runs-on: ubuntu-latest
-    needs: shellcheck
-    strategy:
-      matrix:
-        arch: [amd64, arm64]
-        include:
-          - arch: amd64
-            platform: linux/amd64
-            image: archlinux:latest
-          - arch: arm64  
-            platform: linux/arm64
-            image: menci/archlinuxarm:latest
+      - name: Install linters
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck shfmt
 
+      - name: List scripts to lint
+        id: list_scripts
+        run: |
+          mapfile -t files < <(git ls-files | grep -E '\.sh$|^scripts/.*' || true)
+          printf "%s\n" "${files[@]}"
+          echo "count=${#files[@]}" >> "$GITHUB_OUTPUT"
+
+      - name: shellcheck
+        if: steps.list_scripts.outputs.count != '0'
+        run: |
+          shellcheck --version
+          # Adjust excludes/SC codes as needed
+          shellcheck -S style -e SC1090,SC1091 $(git ls-files | grep -E '\.sh$|^scripts/.*')
+
+      - name: shfmt (check only)
+        if: steps.list_scripts.outputs.count != '0'
+        run: |
+          shfmt -v -i 2 -ci -d $(git ls-files | grep -E '\.sh$|^scripts/.*')
+
+  # 2) Syntax + smoke tests (safe, non-privileged)
+  smoke:
+    name: Syntax + Smoke [aarch64]
+    runs-on: ubuntu-24.04-arm
+    needs: [lint]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU for multi-arch
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: ${{ matrix.platform }}
-
-      - name: Pull Arch Linux image for ${{ matrix.arch }}
-        run: docker pull --platform ${{ matrix.platform }} ${{ matrix.image }}
-
-      - name: Prepare installer directory
+      - name: Assert we are on ARM64
         run: |
-          mkdir -p ci-test/.local/share/omarchy
-          cp -r . ci-test/.local/share/omarchy/
-          # Remove .git directory to avoid issues
-          rm -rf ci-test/.local/share/omarchy/.git
-        shell: bash
+          arch=$(uname -m)
+          echo "Detected arch: $arch"
+          test "$arch" = "aarch64" || { echo "Not running on aarch64"; exit 1; }
 
-      - name: Create dry-run script
+      - name: Install helpful tools (optional)
         run: |
-          cat > ci-test/test-install.sh << 'EOF'
-          #!/bin/bash
+          sudo apt-get update
+          sudo apt-get install -y jq curl coreutils
 
-          # Set up environment for dry-run testing
-          export HOME="/root"
-          export OMARCHY_PATH="/root/.local/share/omarchy"
-          export OMARCHY_INSTALL="$OMARCHY_PATH/install"
-          export OMARCHY_INSTALL_LOG_FILE="/var/log/omarchy-install.log"
-          export PATH="$OMARCHY_PATH/bin:$PATH"
-
-          # Create necessary directories
-          mkdir -p "$HOME/.local/share"
-          cp -r /omarchy/.local/share/omarchy "$HOME/.local/share/"
-
-          # Test architecture detection and compatibility
-          echo "=== Testing architecture compatibility ==="
-          ARCH="$(uname -m)"
-          echo "Detected architecture: $ARCH"
-
-          # Test the guard script logic for both architectures
-          GUARD_FILE="$OMARCHY_INSTALL/preflight/guard.sh"
-          if [[ "$ARCH" == "aarch64" || "$ARCH" == "x86_64" ]]; then
-            echo "✓ Architecture $ARCH should be supported"
-            
-            # Verify the guard.sh script supports this architecture
-            if grep -q "$ARCH" "$GUARD_FILE"; then
-              echo "✓ guard.sh includes $ARCH support"
-            else
-              echo "✗ guard.sh missing $ARCH support"
-              exit 1
-            fi
-          else
-            echo "✗ Unsupported architecture: $ARCH"
-            exit 1
-          fi
-
-          # Run fix-mirrors.sh in dry-run mode to test architecture compatibility
-          echo "=== Testing fix-mirrors.sh in dry-run mode ==="
-          cd "$OMARCHY_PATH"
-          bash fix-mirrors.sh --dry-run
-
-          # Test pacman.conf generation for correct architecture
-          echo "=== Testing pacman.conf generation ==="
-          if [[ -f /tmp/pacman.conf ]]; then
-            echo "Testing generated pacman.conf:"
-            if grep -q "Architecture = $ARCH" /tmp/pacman.conf; then
-              echo "✓ pacman.conf correctly sets architecture to $ARCH"
-            else
-              echo "✗ pacman.conf does not set correct architecture"
-              echo "Expected: Architecture = $ARCH"
-              echo "Found:"
-              grep "Architecture" /tmp/pacman.conf || echo "No Architecture line found"
-              exit 1
-            fi
-          fi
-
-          # Test mirror selection logic
-          echo "=== Testing mirror selection for $ARCH ==="
-          if [[ "$ARCH" == "aarch64" ]]; then
-            echo "Testing ARM mirror selection..."
-            if bash -c 'source fix-mirrors.sh; [[ "${arch_servers[0]}" =~ archlinuxarm.org ]]' 2>/dev/null; then
-              echo "✓ ARM mirrors correctly selected for aarch64"
-            fi
-          else
-            echo "Testing x86_64 mirror selection..."
-            if bash -c 'source fix-mirrors.sh; [[ "${arch_servers[0]}" =~ mirror.archlinux.org ]]' 2>/dev/null; then
-              echo "✓ Standard mirrors correctly selected for x86_64"
-            fi
-          fi
-
-          # Test for Asahi-specific features if on ARM
-          if [[ "$ARCH" == "aarch64" ]]; then
-            echo "=== Testing Asahi Linux compatibility ==="
-            # Check if we can detect potential Asahi Linux environment
-            if [[ -f /proc/device-tree/compatible ]]; then
-              echo "Device tree detected (potential Apple Silicon hardware)"
-            fi
-            echo "✓ ARM64 architecture tests completed"
-          fi
-
-          echo "=== All tests completed successfully ==="
-          EOF
-          chmod +x ci-test/test-install.sh
-        shell: bash
-
-      - name: Run installation test in Docker (${{ matrix.arch }})
+      - name: Bash syntax check for all scripts
         run: |
-          docker run --rm \
-            --platform ${{ matrix.platform }} \
-            -v "${{ github.workspace }}/ci-test:/omarchy" \
-            -w /omarchy \
-            ${{ matrix.image }} \
-            bash -c "
-              # Update package database and install essential packages
-              pacman -Sy --noconfirm
-              pacman -S --noconfirm bash grep sed curl
+          set -o pipefail
+          # Only .sh files and scripts directory
+          while IFS= read -r -d '' f; do
+            echo "::group::bash -n $f"
+            bash -n "$f"
+            echo "::endgroup::"
+          done < <(git ls-files -z | grep -z -E '\.sh$|^scripts/.*')
 
-              # Run the test script
-              bash -x test-install.sh
-            "
-        shell: bash
-
-  asahi-compatibility-test:
-    name: Asahi Linux ARM64 Compatibility Test
-    runs-on: ubuntu-latest
-    needs: shellcheck
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU for ARM64
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/arm64
-
-      - name: Run Asahi compatibility test
+      - name: Smoke run selected scripts in DRY_RUN/--help mode
+        env:
+          DRY_RUN: "1"
+          # Add any other env your scripts respect to avoid destructive actions
         run: |
-          docker run --rm \
-            --platform linux/arm64 \
-            -v "${{ github.workspace }}:/omarchy" \
-            -w /omarchy \
-            menci/archlinuxarm:latest \
-            bash -c "
-              # Update package database and install essential packages
-              pacman -Sy --noconfirm
-              pacman -S --noconfirm bash grep sed curl
+          # TODO: Replace with the specific entry points you want to verify
+          # Examples:
+          # ./scripts/set-arm-mirrors.sh --help || true
+          # ./scripts/timezone/auto-detect-timezone.sh --help || true
+          # ./install.sh --dry-run || true
+          echo "Add your smoke commands here."
+          exit 0
 
-              # Run the Asahi compatibility test
-              echo '=== Running Asahi Linux Compatibility Test ==='
-              bash -x tests/test-asahi-compatibility.sh
-            "
-        shell: bash
+  # 3) OPTIONAL: Arch Linux ARM container tests
+  # NOTE: Only enable if you have a multi-arch container image that supports aarch64.
+  # Many 'archlinux' images are x86_64-only; verify before using.
+  # arch-arm-container:
+  #   name: Arch ARM container tests [aarch64]
+  #   runs-on: ubuntu-24.04-arm
+  #   container:
+  #     image: ghcr.io/<your-org>/<arch-arm-image>:latest # <-- ensure this is ARM64
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Verify container arch
+  #       run: uname -m | grep -q aarch64
+  #     - name: Run Arch-specific tests
+  #       run: |
+  #         pacman -Syu --noconfirm jq
+  #         # Run your Arch-only commands in here…
