@@ -8,14 +8,14 @@
 #   For usage instead of walker, which
 #   functional is cropped for aarch64
 
-#   TayoWrld
+#   TayoW  case "$(menu "Setup" $'  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n  Fuzzel\n󰍜  Waybar\n󰞅  XCompose')" inld
 #    .-|:"""":""""""'''"""":|-.
 #   :  |'----'-------------'|  :
 #   :  |                    |  :
 #   :  |                    |  :
 #   :  |               mga  |  :
-#   :  | .----------------. |  :
-#   :  |[ zip:          [i]]|  :
+#   :  | .----------------. |  case "$(menu "Restart" $'  Hypridle\n  Hyprsunset\n  Swayosd\n  Fuzzel\n󰍜  Waybar')" in :
+#   :    case "$(menu "Use default config" $'  Hypridle\n  Hyprlock\n  Hyprsunset\n󱣴  Plymouth\n  Swayosd\n  Fuzzel\n󰍜  Waybar')" in[ zip:          [i]]|  :
 #   :  |[------------------]|  :
 #   :  |[                  ]|  :
 #   :  |[                  ]|  :
@@ -265,7 +265,7 @@ show_setup_config_menu() {
   *Hyprlock*) open_in_editor ~/.config/hypr/hyprlock.conf ;;
   *Hyprsunset*) open_in_editor ~/.config/hypr/hyprsunset.conf && omarchy-restart-hyprsunset ;;
   *Swayosd*) open_in_editor ~/.config/swayosd/config.toml && omarchy-restart-swayosd ;;
-  *Walker*) open_in_editor ~/.config/walker/config.toml && omarchy-restart-walker ;;
+  *Fuzzel*) open_in_editor ~/.config/fuzzel/fuzzel.ini && omarchy-restart-walker ;;
   *Waybar*) open_in_editor ~/.config/waybar/config.jsonc && omarchy-restart-waybar ;;
   *XCompose*) open_in_editor ~/.XCompose && omarchy-restart-xcompose ;;
   *) show_main_menu ;;
@@ -460,7 +460,7 @@ show_update_process_menu() {
   *Hypridle*) omarchy-restart-hypridle ;;
   *Hyprsunset*) omarchy-restart-hyprsunset ;;
   *Swayosd*) omarchy-restart-swayosd ;;
-  *Walker*) omarchy-restart-walker ;;
+  *Fuzzel*) omarchy-restart-walker ;;
   *Waybar*) omarchy-restart-waybar ;;
   *) show_update_menu ;;
   esac
@@ -474,7 +474,7 @@ show_update_config_menu() {
   *Hyprsunset*) present_terminal omarchy-refresh-hyprsunset ;;
   *Plymouth*) present_terminal omarchy-refresh-plymouth ;;
   *Swayosd*) present_terminal omarchy-refresh-swayosd ;;
-  *Walker*) present_terminal omarchy-refresh-walker ;;
+  *Fuzzel*) present_terminal omarchy-refresh-walker ;;
   *Waybar*) present_terminal omarchy-refresh-waybar ;;
   *) show_update_menu ;;
   esac
