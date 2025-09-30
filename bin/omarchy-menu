@@ -454,8 +454,8 @@ show_update_menu() {
 }
 
 show_update_branch_menu() {
-  case "$(menu "Branch" $'master\ndev' "" "$(omarchy-version-branch)")" in
-  *master*) present_terminal "omarchy-update-branch master" ;;
+  case "$(menu "Branch" $'main\ndev' "" "$(omarchy-version-branch)")" in
+  *main*) present_terminal "omarchy-update-branch main" ;;
   *dev*) present_terminal "omarchy-update-branch dev" ;;
   *) show_update_menu ;;
   esac
