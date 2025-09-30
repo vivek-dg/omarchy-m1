@@ -16,6 +16,9 @@ export CPPFLAGS="-w"
 export LDFLAGS="-w"
 export MAKEFLAGS="-s"
 
+# Set locale first for proper TUI display
+source "$OMARCHY_INSTALL/preflight/locale.sh"
+
 # Install
 source "$OMARCHY_INSTALL/helpers/all.sh"
 source "$OMARCHY_INSTALL/preflight/all.sh"
