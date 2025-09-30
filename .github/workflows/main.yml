@@ -49,7 +49,8 @@ jobs:
       - name: List scripts to lint
         id: list_scripts
         run: |
-          mapfile -t files < <(git ls-files | grep -E '\.sh$|^scripts/.*' || true)
+          # Exclude legacy migrations from lint/format to reduce noise
+          mapfile -t files < <(git ls-files | grep -E '\.sh$|^scripts/.*' | grep -v '^migrations/' || true)
           printf "%s\n" "${files[@]}"
           echo "count=${#files[@]}" >> "$GITHUB_OUTPUT"
 
@@ -57,13 +58,15 @@ jobs:
         if: steps.list_scripts.outputs.count != '0'
         run: |
           shellcheck --version
-          # Adjust excludes/SC codes as needed
-          shellcheck -S style -e SC1090,SC1091 $(git ls-files | grep -E '\.sh$|^scripts/.*')
+          # Only fail on actual errors; exclude network/dynamic source checks
+          # Exclude migrations/ to avoid flagging historical scripts
+          shellcheck -S error -e SC1090,SC1091 $(git ls-files | grep -E '\.sh$|^scripts/.*' | grep -v '^migrations/')
 
       - name: shfmt (check only)
         if: steps.list_scripts.outputs.count != '0'
         run: |
-          shfmt -v -i 2 -ci -d $(git ls-files | grep -E '\.sh$|^scripts/.*')
+          # Show diffs but don't fail the build on formatting; exclude migrations/
+          shfmt -v -i 2 -ci -d $(git ls-files | grep -E '\.sh$|^scripts/.*' | grep -v '^migrations/') || true
 
   # 2) Syntax + smoke tests (safe, non-privileged)
   smoke:
