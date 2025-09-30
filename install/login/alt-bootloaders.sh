@@ -1,3 +1,4 @@
+#!/bin/bash
 ARCH="$(uname -m)"
 if [[ "$ARCH" == "x86_64" || "$ARCH" == "aarch64" ]] && ! command -v limine &>/dev/null; then
   # Add kernel hooks
@@ -105,7 +106,7 @@ if [[ "$ARCH" == "x86_64" || "$ARCH" == "aarch64" ]] && ! command -v limine &>/d
     new_cmdline=$(echo "$new_cmdline" | xargs)
 
     # Write new file
-    echo $new_cmdline | sudo tee /etc/kernel/cmdline
+    echo "$new_cmdline" | sudo tee /etc/kernel/cmdline
   else
     echo ""
     echo " None of systemd-boot, GRUB, or UKI detected. Please manually add these kernel parameters:"

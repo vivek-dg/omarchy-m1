@@ -1,3 +1,4 @@
+#!/bin/bash
 # Enhanced timezone detection and configuration
 echo "Configuring timezone..."
 

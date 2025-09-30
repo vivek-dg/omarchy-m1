@@ -1,3 +1,4 @@
+#!/bin/bash
 # Configure pacman
 sudo cp -f ~/.local/share/omarchy/default/pacman/pacman.conf /etc/pacman.conf
 # Use safe mirrorlist updater to avoid overwriting a user's mirrorlist

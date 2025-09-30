@@ -188,6 +188,6 @@ jobs:
 
               # Run the Asahi compatibility test
               echo '=== Running Asahi Linux Compatibility Test ==='
-              bash -x test-asahi-compatibility.sh
+              bash -x tests/test-asahi-compatibility.sh
             "
         shell: bash

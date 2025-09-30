@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Soft abort: warn, but allow user to continue or skip with a clear message
 abort() {
