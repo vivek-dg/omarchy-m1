@@ -1,3 +1,4 @@
+#!/bin/bash
 ARCH="$(uname -m)"
 if [[ "$ARCH" == "x86_64" ]] && command -v limine &>/dev/null; then
   sudo tee /etc/mkinitcpio.conf.d/omarchy_hooks.conf <<EOF >/dev/null

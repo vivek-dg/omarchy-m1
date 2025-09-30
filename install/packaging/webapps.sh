@@ -1,3 +1,4 @@
+#!/bin/bash
 omarchy-webapp-install "HEY" https://app.hey.com HEY.png
 omarchy-webapp-install "Basecamp" https://launchpad.37signals.com Basecamp.png
 omarchy-webapp-install "WhatsApp" https://web.whatsapp.com/ WhatsApp.png

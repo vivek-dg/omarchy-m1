@@ -39,7 +39,7 @@ hidden = true
 
 [[builtins.bookmarks.entries]]
 label = "Omarchy - Github"
-url = "https://github.com/basecamp/omarchy"
+url = "https://github.com/malik-na/omarchy-mac"
 keywords = ["omarchy", "github"]
 
 [[builtins.bookmarks.entries]]

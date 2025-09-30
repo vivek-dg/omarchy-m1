@@ -1,3 +1,4 @@
+#!/bin/bash
 # Temporarily disable mkinitcpio hooks to prevent multiple regenerations during package installation
 # This speeds up installation significantly
 

@@ -1,3 +1,4 @@
+#!/bin/bash
 source "$OMARCHY_INSTALL/helpers/packages.sh"
 
 # Read core and optional packages from omarchy-base.packages

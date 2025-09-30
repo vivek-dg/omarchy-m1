@@ -7,8 +7,16 @@
 
 set -euo pipefail
 
+# Detect architecture
+ARCH="$(uname -m)"
+case "$ARCH" in
+  "x86_64") PACMAN_ARCH="x86_64" ;;
+  "aarch64") PACMAN_ARCH="aarch64" ;;
+  *) echo "[ERROR] Unsupported architecture: $ARCH" >&2; exit 1 ;;
+esac
+
 # Setup pacman.conf first
-cat > /tmp/pacman.conf << 'EOL'
+cat > /tmp/pacman.conf << "EOL"
 # /etc/pacman.conf
 #
 # See the pacman.conf(5) manpage for option and repository directives
@@ -29,7 +37,7 @@ HoldPkg     = pacman glibc
 #XferCommand = /usr/bin/curl -L -C - -f -o %o %u
 #XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
 #CleanMethod = KeepInstalled
-Architecture = aarch64
+Architecture = PACMAN_ARCH_PLACEHOLDER
 
 # Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup
 #IgnorePkg   =
@@ -75,6 +83,11 @@ LocalFileSigLevel = Optional
 # repo name header and Include lines. You can add preferred servers immediately
 # after the header, and they will be used before the default mirrors.
 
+EOL
+
+# Add architecture-specific repositories
+if [[ "$PACMAN_ARCH" == "aarch64" ]]; then
+cat >> /tmp/pacman.conf << 'AARCH64_REPOS'
 [asahi-alarm]
 Include = /etc/pacman.d/mirrorlist.asahi-alarm
 
@@ -84,15 +97,27 @@ Include = /etc/pacman.d/mirrorlist
 [extra]
 Include = /etc/pacman.d/mirrorlist
 
-[community]
-Include = /etc/pacman.d/mirrorlist
-
 [alarm]
 Include = /etc/pacman.d/mirrorlist
 
 [aur]
 Include = /etc/pacman.d/mirrorlist
-EOL
+AARCH64_REPOS
+else
+cat >> /tmp/pacman.conf << 'X86_64_REPOS'
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+Include = /etc/pacman.d/mirrorlist
+
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+X86_64_REPOS
+fi
+
+# Replace the architecture placeholder with the actual architecture
+sed -i "s/PACMAN_ARCH_PLACEHOLDER/$PACMAN_ARCH/g" /tmp/pacman.conf
 
 # Install the pacman.conf if it doesn't match
 if ! cmp -s /tmp/pacman.conf /etc/pacman.conf; then
@@ -144,13 +169,23 @@ if [[ ! -f "$SRC" ]]; then
 fi
 
 if [[ ! -f "$DEST" ]]; then
-  echo "[INFO] Destination $DEST does not exist. Will create a mirrorlist with Arch Linux ARM servers."
-  if [[ $DRYRUN -eq 1 ]]; then
-    echo "[DRYRUN] Would write Arch Linux ARM servers to $DEST"
-    exit 0
+  if [[ "$PACMAN_ARCH" == "aarch64" ]]; then
+    echo "[INFO] Destination $DEST does not exist. Will create a mirrorlist with Arch Linux ARM servers."
+    if [[ $DRYRUN -eq 1 ]]; then
+      echo "[DRYRUN] Would write Arch Linux ARM servers to $DEST"
+      exit 0
+    fi
+    # Build a minimal Arch Linux ARM mirror entry based on COUNTRY
+    arch_servers=("Server = http://$COUNTRY.mirror.archlinuxarm.org/\$arch/\$repo" "Server = http://mirror.archlinuxarm.org/\$arch/\$repo")
+  else
+    echo "[INFO] Destination $DEST does not exist. Will create a mirrorlist with Arch Linux servers."
+    if [[ $DRYRUN -eq 1 ]]; then
+      echo "[DRYRUN] Would write Arch Linux servers to $DEST"
+      exit 0
+    fi
+    # Build a minimal Arch Linux mirror entry based on COUNTRY
+    arch_servers=("Server = http://$COUNTRY.mirror.archlinux.org/\$repo/os/\$arch" "Server = http://mirror.archlinux.org/\$repo/os/\$arch")
   fi
-  # Build a minimal Arch Linux ARM mirror entry based on COUNTRY
-  arch_servers=("Server = http://$COUNTRY.mirror.archlinuxarm.org/")
   # Write the servers (simple form)
   tmp=$(mktemp)
   for s in "${arch_servers[@]}"; do
@@ -158,7 +193,7 @@ if [[ ! -f "$DEST" ]]; then
   done
   sudo cp "$tmp" "$DEST"
   rm -f "$tmp"
-  echo "[OK] Created $DEST with Arch Linux ARM servers for country: $COUNTRY"
+  echo "[OK] Created $DEST with appropriate servers for $PACMAN_ARCH architecture"
   exit 0
 fi
 
@@ -206,8 +241,12 @@ for s in "${dest_servers[@]}"; do
   filtered_dest+=("$s")
 done
 
-# Build desired Arch Linux ARM servers
-arch_servers=("Server = http://$COUNTRY.mirror.archlinuxarm.org/\$arch/\$repo" "Server = http://mirror.archlinuxarm.org/\$arch/\$repo")
+# Build desired servers based on architecture
+if [[ "$PACMAN_ARCH" == "aarch64" ]]; then
+  arch_servers=("Server = http://$COUNTRY.mirror.archlinuxarm.org/\$arch/\$repo" "Server = http://mirror.archlinuxarm.org/\$arch/\$repo")
+else
+  arch_servers=("Server = http://$COUNTRY.mirror.archlinux.org/\$repo/os/\$arch" "Server = http://mirror.archlinux.org/\$repo/os/\$arch")
+fi
 
 # Build set of existing servers for lookup
 declare -A have
@@ -225,7 +264,7 @@ for s in "${arch_servers[@]}"; do
 done
 
 if [[ ${#missing_arch[@]} -eq 0 && ${#filtered_dest[@]} -eq ${#dest_servers[@]} ]]; then
-  echo "[OK] No changes required; Arch Linux ARM servers present and Omarchy servers removed."
+  echo "[OK] No changes required; appropriate servers for $PACMAN_ARCH present and Omarchy servers removed."
   exit 0
 fi
 
@@ -244,7 +283,7 @@ if [[ $PREFER -eq 1 ]]; then
   done
 
   if [[ $DRYRUN -eq 1 ]]; then
-    echo "[DRYRUN] Would write preferred Arch Linux ARM servers at top of $DEST:" 
+    echo "[DRYRUN] Would write preferred servers for $PACMAN_ARCH at top of $DEST:" 
     for s in "${combined_servers[@]}"; do echo "  $s"; done
     exit 0
   fi
@@ -256,13 +295,13 @@ if [[ $PREFER -eq 1 ]]; then
     cat "$tmp".body
   } | sudo tee "$DEST" > /dev/null
   rm -f "$tmp".body
-  echo "[OK] Wrote preferred Arch Linux ARM servers to $DEST"
+  echo "[OK] Wrote preferred servers for $PACMAN_ARCH to $DEST"
   exit 0
 fi
 
 # Default: append any missing arch servers after existing filtered servers
 if [[ $DRYRUN -eq 1 ]]; then
-  echo "[DRYRUN] Would remove Omarchy servers and append missing Arch Linux ARM servers to $DEST"
+  echo "[DRYRUN] Would remove Omarchy servers and append missing servers for $PACMAN_ARCH to $DEST"
   echo "[DRYRUN] Servers to append:" 
   for s in "${missing_arch[@]}"; do echo "  $s"; done
   exit 0
@@ -278,5 +317,5 @@ grep -v -E '^\s*Server\s*=' "$DEST" > "$tmp".body || true
 } | sudo tee "$DEST" > /dev/null
 rm -f "$tmp".body
 
-echo "[OK] Updated $DEST: removed Omarchy servers (if any) and ensured Arch Linux ARM servers present"
+echo "[OK] Updated $DEST: removed Omarchy servers (if any) and ensured appropriate servers for $PACMAN_ARCH present"
 exit 0

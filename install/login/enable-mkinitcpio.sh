@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Re-enabling mkinitcpio hooks..."
 
 # Restore the specific mkinitcpio pacman hooks

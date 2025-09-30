@@ -1,3 +1,4 @@
+#!/bin/bash
 # Configure keyboard backlight brightness
 # Sets keyboard backlight to 50% if available
 

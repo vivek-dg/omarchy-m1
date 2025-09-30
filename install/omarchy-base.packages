@@ -76,7 +76,6 @@ kvantum-qt5
 lazydocker
 lazygit
 less
-libqalculate
 libreoffice
 llvm
 localsend
@@ -102,6 +101,7 @@ python-gobject
 python-poetry-core
 python-terminaltexteffects
 ripgrep
+rsync
 satty
 #signal-desktop
 slurp
@@ -122,7 +122,7 @@ ufw
 ufw-docker
 unzip
 uwsm
-walker
+fuzzel
 wf-recorder
 whois
 wireless-regdb
