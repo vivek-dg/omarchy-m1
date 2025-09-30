@@ -101,6 +101,7 @@ python-gobject
 python-poetry-core
 python-terminaltexteffects
 ripgrep
+rsync
 satty
 #signal-desktop
 slurp
