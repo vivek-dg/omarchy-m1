@@ -1,11 +1,11 @@
 return {
 	{
-		"folke/tokyonight.nvim",
+		"catppuccin/nvim",
 	},
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = "tokyonight",
+			colorscheme = "catppuccin-latte",
 		},
 	},
 }
