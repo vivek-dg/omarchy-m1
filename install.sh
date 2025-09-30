@@ -9,11 +9,11 @@ export OMARCHY_INSTALL="$OMARCHY_PATH/install"
 export OMARCHY_INSTALL_LOG_FILE="/var/log/omarchy-install.log"
 export PATH="$OMARCHY_PATH/bin:$PATH"
 
-# Suppress C compiler warnings and FORTIFY flags during package compilation
-export CFLAGS="-w -Wno-error -U_FORTIFY_SOURCE"
-export CXXFLAGS="-w -Wno-error -U_FORTIFY_SOURCE"
-export CPPFLAGS="-w"
-export LDFLAGS="-w"
+# Set default compilation flags (do not suppress warnings or disable FORTIFY_SOURCE)
+export CFLAGS=""
+export CXXFLAGS=""
+export CPPFLAGS=""
+export LDFLAGS=""
 export MAKEFLAGS="-s"
 
 # Install
