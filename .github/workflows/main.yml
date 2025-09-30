@@ -33,8 +33,10 @@ jobs:
         include:
           - arch: amd64
             platform: linux/amd64
+            image: archlinux:latest
           - arch: arm64  
             platform: linux/arm64
+            image: menci/archlinuxarm:latest
 
     steps:
       - name: Checkout code
@@ -46,7 +48,7 @@ jobs:
           platforms: ${{ matrix.platform }}
 
       - name: Pull Arch Linux image for ${{ matrix.arch }}
-        run: docker pull --platform ${{ matrix.platform }} archlinux:latest
+        run: docker pull --platform ${{ matrix.platform }} ${{ matrix.image }}
 
       - name: Prepare installer directory
         run: |
@@ -149,7 +151,7 @@ jobs:
             --platform ${{ matrix.platform }} \
             -v "${{ github.workspace }}/ci-test:/omarchy" \
             -w /omarchy \
-            archlinux:latest \
+            ${{ matrix.image }} \
             bash -c "
               # Update package database and install essential packages
               pacman -Sy --noconfirm
@@ -180,7 +182,7 @@ jobs:
             --platform linux/arm64 \
             -v "${{ github.workspace }}:/omarchy" \
             -w /omarchy \
-            archlinux:latest \
+            menci/archlinuxarm:latest \
             bash -c "
               # Update package database and install essential packages
               pacman -Sy --noconfirm
