@@ -441,7 +441,13 @@ show_update_menu() {
   *Themes*) present_terminal omarchy-theme-update ;;
   *Process*) show_update_process_menu ;;
   *Hardware*) show_update_hardware_menu ;;
-  *Timezone*) omarchy-cmd-tzupdate ;;
+  *Timezone*) 
+    case "$(menu "Timezone" $'  Auto-detect\n  Manual Selection\n  Show Current')" in
+      *Auto-detect*) omarchy-cmd-tzupdate-enhanced ;;
+      *Manual*) omarchy-cmd-tzupdate-enhanced manual ;;
+      *Show*) omarchy-cmd-tzupdate-enhanced show ;;
+    esac
+    ;;
   *Password*) show_update_password_menu ;;
   *) show_main_menu ;;
   esac
