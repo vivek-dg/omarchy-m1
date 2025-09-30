@@ -67,9 +67,13 @@ As your new user, set up the AUR helper and install Omarchy:
 
 ## Omarchy Menu
 
-_As Walker is not fully aarch64 compatible, you can install __Omarchy Mac Menu__ from the following repo_
-- [https://github.com/tayowrld/omarchy-mac-menu](https://github.com/tayowrld/omarchy-mac-menu)
-- Follow the instruction and remember to install fuzzel - ```sudo pacman -S fuzzel```
+Omarchy Mac now includes the **Omarchy Mac Menu** by default, which replaces Walker with fuzzel for better aarch64 compatibility and performance. The menu system uses fuzzel as the frontend while maintaining all the original functionality.
+
+Key improvements:
+- Better performance on aarch64 systems (Apple Silicon Macs)
+- Fuzzel-based frontend for improved stability
+- Maintains all original omarchy menu functionality
+- Automatic migration from walker-based setup
 
 
 ## Mirrorlist updates

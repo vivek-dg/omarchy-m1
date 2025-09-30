@@ -76,7 +76,6 @@ kvantum-qt5
 lazydocker
 lazygit
 less
-libqalculate
 libreoffice
 llvm
 localsend
@@ -122,7 +121,7 @@ ufw
 ufw-docker
 unzip
 uwsm
-walker
+fuzzel
 wf-recorder
 whois
 wireless-regdb
