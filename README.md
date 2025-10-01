@@ -22,7 +22,7 @@ Once inside the Asahi Alarm Installer, please follow the on-screen instructions 
 After installation, boot into Arch Linux and perform the initial setup:
 
 1. **Log into root** - username and password: `root`
-2. **Configure wifi** - Run `nmtui` for network setup
+2. **Configure wifi** - Run `nmtui` for network setup (if you get an error after activating your wifi, reboot)
 3. **Update system** - Run `pacman -Syu`
 4. **Install essential packages** - Run `pacman -S sudo git base-devel neovim chromium`
 5. **Set locale** - Run `nano /etc/locale.gen` and uncomment `en_US.UTF-8`, save and exit.
