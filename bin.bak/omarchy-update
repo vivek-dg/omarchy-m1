@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+omarchy-snapshot create || [ $? -eq 127 ]
+omarchy-update-git
+omarchy-update-perform
