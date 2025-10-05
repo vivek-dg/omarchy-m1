@@ -18,4 +18,4 @@ build/
 Thumbs.db
 
 # Customisation
-./themes/everforest/backgrounds/
+./themes/*/backgrounds/
