@@ -104,6 +104,9 @@ stop_install_log() {
         TOTAL_MINS=$((TOTAL_DURATION / 60))
         TOTAL_SECS=$((TOTAL_DURATION % 60))
         echo "Total:       ${TOTAL_MINS}m ${TOTAL_SECS}s" >>"$OMARCHY_INSTALL_LOG_FILE"
+      else
+        # If no Archinstall data, use Omarchy time as total
+        echo "Total:       ${OMARCHY_MINS}m ${OMARCHY_SECS}s" >>"$OMARCHY_INSTALL_LOG_FILE"
       fi
     fi
     echo "=================================" >>"$OMARCHY_INSTALL_LOG_FILE"
