@@ -31,8 +31,8 @@ iwd
 nautilus
 noto-fonts
 nvim
-omarchy-chromium
-omarchy-lazyvim
+#omarchy-chromium
+#omarchy-lazyvim
 polkit-gnome
 qt5-wayland
 waybar
@@ -89,7 +89,7 @@ noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
 obs-studio
-obsidian
+#obsidian
 pamixer
 pinta
 playerctl
