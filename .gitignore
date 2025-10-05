@@ -2,6 +2,9 @@
 test-ci/
 ci-test/
 
+# baks
+bin.bak
+
 # Temporary files
 *.tmp
 *.log
@@ -9,7 +12,10 @@ ci-test/
 # Build artifacts
 dist/
 build/
-bin.bak/
+
 # OS files
 .DS_Store
 Thumbs.db
+
+# Customisation
+./themes/everforest/backgrounds/
