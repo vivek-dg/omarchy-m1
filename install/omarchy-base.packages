@@ -5,10 +5,11 @@
 
 # --- Omarchy core package list ---
 # These packages are always installed (required for a working system):
+gum
+asahi-desktop-meta
 linux-asahi
 linux-asahi-headers
 asahi-fwextract
-asahi-desktop-meta
 mesa
 mesa-utils
 mesa-demos
@@ -26,7 +27,6 @@ fcitx5
 fcitx5-gtk
 fcitx5-qt
 fontconfig
-gum
 iwd
 nautilus
 noto-fonts

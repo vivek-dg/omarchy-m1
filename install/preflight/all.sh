@@ -3,7 +3,6 @@ source $OMARCHY_INSTALL/preflight/guard.sh
 source $OMARCHY_INSTALL/preflight/begin.sh
 source $OMARCHY_INSTALL/preflight/identification.sh
 run_logged $OMARCHY_INSTALL/preflight/show-env.sh
-run_logged $OMARCHY_INSTALL/preflight/passwordless-installer.sh
 run_logged $OMARCHY_INSTALL/preflight/arm-mirrors.sh
 run_logged $OMARCHY_INSTALL/preflight/pacman.sh
 run_logged $OMARCHY_INSTALL/preflight/migrations.sh

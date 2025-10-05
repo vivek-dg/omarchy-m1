@@ -24,11 +24,6 @@ fi
 # Clean up temporary installer sudoers rule
 if sudo test -f /etc/sudoers.d/99-omarchy-installer; then
   sudo rm -f /etc/sudoers.d/99-omarchy-installer &>/dev/null
-  # Only show USB reminder message if not an online install
-  if [[ -z "${OMARCHY_ONLINE_INSTALL:-}" ]]; then
-    echo
-    echo_in_style "Remember to remove USB installer!"
-  fi
 fi
 
 # Exit gracefully if user chooses not to reboot
