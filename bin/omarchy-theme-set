@@ -20,7 +20,7 @@ fi
 # Auto-generate fuzzel.ini if missing (for new themes)
 if [[ ! -f "$THEME_PATH/fuzzel.ini" && -f "$THEME_PATH/walker.css" ]]; then
   echo "Auto-generating fuzzel.ini for theme $THEME_NAME..."
-  ~/.local/share/omarchy/bin/omarchy-convert-themes-to-fuzzel
+  omarchy-mac-custom-theme-utility
 fi
 
 # Update theme symlinks
@@ -31,7 +31,7 @@ omarchy-theme-bg-next
 
 # Restart components to apply new theme
 omarchy-restart-waybar
-omarchy-restart-walker  # This now handles fuzzel restart
+omarchy-restart-walker # This now handles fuzzel restart
 omarchy-restart-swayosd
 hyprctl reload
 pkill -SIGUSR2 btop
