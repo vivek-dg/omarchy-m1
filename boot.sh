@@ -17,6 +17,9 @@ ansi_art='                 ▄▄▄
 clear
 echo -e "\n$ansi_art\n"
 
+# Validate sudo access and refresh timestamp to minimize password prompts
+sudo -v
+
 sudo pacman -Syu --noconfirm --needed git
 
 # Use custom repo if specified, otherwise default to malik-na/omarchy-mac

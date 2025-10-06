@@ -1,19 +1,6 @@
 #!/bin/bash
 # Directs user to Omarchy Discord
-QR_CODE='
-█▀▀▀▀▀█ ▄ ▄ ▀▄▄▄█ █▀▀▀▀▀█
-█ ███ █ ▄▄▄▄▀▄▀▄▀ █ ███ █
-█ ▀▀▀ █ ▄█  ▄█▄▄▀ █ ▀▀▀ █
-▀▀▀▀▀▀▀ ▀▄█ █ █ █ ▀▀▀▀▀▀▀
-▀▀█▀▀▄▀▀▀▀▄█▀▀█  ▀ █ ▀ █ 
-█▄█ ▄▄▀▄▄ ▀ ▄ ▀█▄▄▄▄ ▀ ▀█
-▄ ▄▀█ ▀▄▀▀▀▄ ▄█▀▄█▀▄▀▄▀█▀
-█ ▄▄█▄▀▄█ ▄▄▄  ▀ ▄▀██▀ ▀█
-▀ ▀   ▀ █ ▀▄  ▀▀█▀▀▀█▄▀  
-█▀▀▀▀▀█ ▀█  ▄▀▀ █ ▀ █▄▀██
-█ ███ █ █▀▄▄▀ █▀███▀█▄██▄
-█ ▀▀▀ █ ██  ▀ █▄█ ▄▄▄█▀ █
-▀▀▀▀▀▀▀ ▀ ▀ ▀▀▀  ▀ ▀▀▀▀▀▀'
+
 
 # Track if we're already handling an error to prevent double-trapping
 ERROR_HANDLING=false
@@ -100,7 +87,7 @@ catch_errors() {
 
   gum style "$QR_CODE"
   echo
-  gum style "Get help from the community via QR code, at https://discord.gg/tXFUdasqhY, or contact @tiredkebab on X (Twitter)."
+  gum style "Get help from the community via QR code, at https://discord.gg/Pk7q7FkGb7, or contact @tiredkebab on X (Twitter)."
   echo
   gum confirm "Would you like to continue the installation anyway? (Not recommended)" && {
     echo -e "\e[33m[Omarchy] Continuing at your own risk...\e[0m"

@@ -5,10 +5,11 @@
 
 # --- Omarchy core package list ---
 # These packages are always installed (required for a working system):
+gum
+asahi-desktop-meta
 linux-asahi
 linux-asahi-headers
 asahi-fwextract
-asahi-desktop-meta
 mesa
 mesa-utils
 mesa-demos
@@ -26,13 +27,12 @@ fcitx5
 fcitx5-gtk
 fcitx5-qt
 fontconfig
-gum
 iwd
 nautilus
 noto-fonts
 nvim
-omarchy-chromium
-omarchy-lazyvim
+#omarchy-chromium
+#omarchy-lazyvim
 polkit-gnome
 qt5-wayland
 waybar
@@ -83,13 +83,14 @@ luarocks
 mako
 man
 mariadb-libs
+mise
 mpv
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
 obs-studio
-obsidian
+#obsidian
 pamixer
 pinta
 playerctl

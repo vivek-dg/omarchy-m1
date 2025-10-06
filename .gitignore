@@ -13,3 +13,5 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+
+fix-shebangs.sh
