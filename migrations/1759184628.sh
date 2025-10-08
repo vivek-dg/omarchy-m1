@@ -15,12 +15,8 @@ if ! command -v fuzzel >/dev/null 2>&1; then
   fi
 fi
 
-# Copy fuzzel configuration if it doesn't exist
-if [[ ! -d ~/.config/fuzzel ]]; then
-  echo "Setting up fuzzel configuration..."
-  mkdir -p ~/.config/fuzzel
-  cp -r ~/.local/share/omarchy/config/fuzzel/* ~/.config/fuzzel/
-fi
+mkdir -p ~/.config/fuzzel
+cp -r ~/.local/share/omarchy/config/fuzzel/* ~/.config/fuzzel/
 
 # Remove walker if it's installed (optional)
 if command -v walker >/dev/null 2>&1; then
@@ -29,3 +25,4 @@ fi
 
 echo "Migration complete! omarchy-mac-menu (fuzzel) is now active."
 echo "The main launcher (SUPER+SPACE) now uses fuzzel for better performance on aarch64."
+

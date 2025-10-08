@@ -2,6 +2,9 @@
 test-ci/
 ci-test/
 
+# baks
+bin.bak
+
 # Temporary files
 *.tmp
 *.log
@@ -14,4 +17,6 @@ build/
 .DS_Store
 Thumbs.db
 
+# Customisation
+./themes/*/backgrounds/
 fix-shebangs.sh
