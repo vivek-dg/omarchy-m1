@@ -2,12 +2,21 @@
 # Configure keyboard backlight brightness
 # Sets keyboard backlight to 50% if available
 
-if brightnessctl --list | grep -q "kbd_backlight"; then
-  echo "Setting keyboard backlight to 50%"
-  brightnessctl --device=kbd_backlight set 50%
-else
+# Ensure brightnessctl is installed
+if ! command -v brightnessctl &> /dev/null; then
+  echo "Installing brightnessctl..."
   sudo pacman -S brightnessctl --noconfirm
-  brightnessctl --device=kbd_backlight set 50%
+fi
+
+# Setup sudo-less control for brightnessctl
+echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/brightnessctl" | sudo tee /etc/sudoers.d/brightnessctl
+sudo chmod 440 /etc/sudoers.d/brightnessctl
+
+# Check if keyboard backlight device exists and set it
+if brightnessctl --list 2>/dev/null | grep -q "kbd_backlight"; then
   echo "Setting keyboard backlight to 50%"
+  sudo brightnessctl --device=kbd_backlight set 50%
+else
+  echo "No keyboard backlight device found, skipping configuration"
 fi
 

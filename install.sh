@@ -3,6 +3,9 @@
 # Exit immediately if a command exits with a non-zero status
 #set -eEo pipefail
 
+# Validate sudo access and refresh timestamp at the start
+sudo -v
+
 # Define Omarchy locations
 export OMARCHY_PATH="$HOME/.local/share/omarchy"
 export OMARCHY_INSTALL="$OMARCHY_PATH/install"

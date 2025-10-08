@@ -19,3 +19,4 @@ Thumbs.db
 
 # Customisation
 ./themes/*/backgrounds/
+fix-shebangs.sh
