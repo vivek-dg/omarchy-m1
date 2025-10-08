@@ -101,14 +101,13 @@ New updates coming soon...
 
 ### If you enjoy __Omarchy Mac__, please give it a star and share your exprience on Twitter/X by tagging me [@tiredkebab](https://x.com/tiredkebab) 
 
-Join [Omarchy Mac Discord server](https://discord.gg/KNQRk7dMzy)
+Join [Omarchy Mac Discord server](https://discord.gg/KNQRk7dMzy) for updates and support.
 
-- If you want to support me -  [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/malik2015no)
-
+- If you wish to donate-  [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/malik2015no)
 
 ## Acknowledgements
 
-Thanks @dhh for creating Omarchy.
+Thanks [DHH](https://github.com/dhh) for creating Omarchy.
 
 ## Contributors
 
