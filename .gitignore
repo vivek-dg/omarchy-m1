@@ -19,4 +19,6 @@ Thumbs.db
 
 # Customisation
 ./themes/*/backgrounds/
-fix-shebangs.sh
+./fix-shebangs.sh
+./test-asahi-comapatibility.sh
+./test-timezone-enhancements.sh
