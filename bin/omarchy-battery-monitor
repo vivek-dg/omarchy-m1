@@ -11,7 +11,7 @@
 # - added echo on else to test when running command from terminal
 # - exec-once on hyprland instead of systemd timer, then while true cycle
 
-BATTERY_THRESHOLD=54
+BATTERY_THRESHOLD=15
 
 NOTIFICATION_FLAG="/run/user/$UID/omarchy_battery_notified"
 
@@ -37,7 +37,7 @@ while true; do
     fi
   else
     rm -f "$NOTIFICATION_FLAG"
-    echo "Currently $BATTERY_STATE at $BATTERY_LEVEL%. The treshold to notify is $BATTERY_THRESHOLD% and this utility would notify only on *discharging*"
+    echo "Currently $BATTERY_STATE at $BATTERY_LEVEL%. The threshold to notify is $BATTERY_THRESHOLD% and this utility would notify only on *discharging*"
   fi
 
   sleep 30
