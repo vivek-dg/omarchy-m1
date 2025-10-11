@@ -2,9 +2,6 @@
 test-ci/
 ci-test/
 
-# baks
-bin.bak
-
 # Temporary files
 *.tmp
 *.log
@@ -17,8 +14,7 @@ build/
 .DS_Store
 Thumbs.db
 
-# Customisation
-./themes/*/backgrounds/
-./fix-shebangs.sh
-./test-asahi-comapatibility.sh
-./test-timezone-enhancements.sh
+# Local utility/test scripts (ignore)
+test-asahi-compatibility.sh
+test-timezone-enhancements.sh
+fix-shebangs.sh
