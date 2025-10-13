@@ -4,7 +4,6 @@
 # value is approximate, but close to real one.
 # Sometimes differs from the waybar's value
 # ignoring it, using bare upower's output
-# due to fast discharging treshold was set to 15%
 #
 # changed:
 # - using upower -b instead of previous logic, gave empty results
@@ -15,7 +14,7 @@
 # practice to exit on fail of while true;
 set -o errexit
 
-BATTERY_THRESHOLD=15
+BATTERY_THRESHOLD=10
 
 NOTIFICATION_FLAG="/run/user/$UID/omarchy_battery_notified"
 
