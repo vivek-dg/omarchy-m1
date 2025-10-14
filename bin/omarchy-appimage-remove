@@ -29,7 +29,7 @@ if [ "$#" -eq 0 ]; then
     APP_NAMES=()
     while IFS= read -r line; do
       [[ -n "$line" ]] && APP_NAMES+=("$line")
-    done <<< "$APP_NAMES_STRING"
+    done <<<"$APP_NAMES_STRING"
   else
     echo "No AppImage apps to remove."
     exit 1
@@ -83,12 +83,3 @@ for APP_NAME in "${APP_NAMES[@]}"; do
 
   echo "Removed $APP_NAME"
 done
-
-# Refresh desktop and icon caches when available so menus and icons update immediately for the user.
-command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$DESKTOP_DIR" >/dev/null 2>&1 || true
-if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-  find "$ICON_THEME_BASE" -maxdepth 1 -mindepth 1 -type d -print0 2>/dev/null | while IFS= read -r -d '' theme_dir; do
-    gtk-update-icon-cache -q "$theme_dir" || true
-  done
-fi
-
