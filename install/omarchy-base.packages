@@ -6,10 +6,6 @@
 # --- Omarchy core package list ---
 # These packages are always installed (required for a working system):
 gum
-asahi-desktop-meta
-linux-asahi
-linux-asahi-headers
-asahi-fwextract
 mesa
 mesa-utils
 mesa-demos
