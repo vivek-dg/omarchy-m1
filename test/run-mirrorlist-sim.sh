@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-ROOT="/workspaces/omarchy-mac"
+ROOT="/workspaces/omarchy-m1"
 WORKDIR=$(mktemp -d)
 echo "Working dir: $WORKDIR"
 

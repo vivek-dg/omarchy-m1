@@ -22,8 +22,8 @@ sudo -v
 
 sudo pacman -Syu --noconfirm --needed git
 
-# Use custom repo if specified, otherwise default to malik-na/omarchy-mac
-OMARCHY_REPO="${OMARCHY_REPO:-malik-na/omarchy-mac}"
+# Use custom repo if specified, otherwise default to vivek-dg/omarchy-m1
+OMARCHY_REPO="${OMARCHY_REPO:-vivek-dg/omarchy-m1}"
 
 echo -e "\nCloning Omarchy from: https://github.com/${OMARCHY_REPO}.git"
 rm -rf ~/.local/share/omarchy/
