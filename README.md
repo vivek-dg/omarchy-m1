@@ -1,34 +1,27 @@
+<!-- <img width="2560" height="1600" alt="screenshot-2025-09-28_11-19-38" src="https://github.com/user-attachments/assets/dbce832d-4054-4fbb-8057-e521be4859f8" /> -->
 
-![IMG_5776](https://github.com/user-attachments/assets/86b2651c-4b49-4ec5-ae78-023b01e46a15)
+# Omarchy-M1 installation steps
 
-# Omarchy Mac installation steps
+_Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBooks M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
 
-_Disclaimer: This guide is intended for Apple Silicon Macs M1/M2. It is advised that you follow the instructions very carefully lest you risk bricking the Mac or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
+## Step 1: Install Arch Linux Parallels (M1) VM
 
-## Step 1: Install Arch minimal from Asahi Alarm
+There is existing documentation on installing Arch Linux on https://wiki.archlinux.org/title/Parallels_Desktop. We're interested in the prebuilt VM from 2022. The idea is to use that as a base and then build on it to avoid the painful process of installing Arch by hand.
 
-Visit [https://asahi-alarm.org/](https://asahi-alarm.org/) and run the following script in your Terminal to start Asahi Alarm Installer:
-
-```bash
-curl https://asahi-alarm.org/installer-bootstrap.sh | sh
-```
-
-Once inside the Asahi Alarm Installer, please follow the on-screen instructions (very carefully). A few recommendations:
-
-- Ideally, you should have at least `50 GB` available on your SSD that you can dedicate to the Linux partition.
-- Choose `Asahi Arch Minimal` from the list of OS options the installer provides.
+* **Download the VM** https://pkgbuild.com/~tpowa/parallels/5.19.x/
+* **Copy the file** named 'Arch Linux Parallels Desktop.pvm' into your ~/Parallels directory
+* **Open the .pvm file in Parallels** Open the Parallels Desktop application, go to File > Open, and select the file from your computer. You can also simply double-click the .pvm file to open it automatically, or drag and drop it onto the Parallels Control Center.
 
 ## Step 2: Initial Arch Linux Setup
 
 After installation, boot into Arch Linux and perform the initial setup:
 
-1. **Log into root** - username and password: `root`
-2. **Configure wifi** - Run `nmtui` for network setup (if you get an error after activating your wifi, reboot)
-3. **Update system** - Run `pacman -Syu`
-4. **Install essential packages** - Run `pacman -S sudo git base-devel neovim chromium`
-5. **Set locale** - Run `nano /etc/locale.gen` and uncomment `en_US.UTF-8`, save and exit.
-Run `locale-gen`, `nano /etc/locale.conf` and it should show `LANG=en_US.UTF-8`, if it doesn't, change it. 
-Now run `locale` and then `reboot` .
+* **Login** provide ```root``` for the user and ```123``` for password based on the default config on the image
+* **Upgrade Arch** to the latest verion with ```pacman -Syu```
+* **Reboot** Once the upgrade completes, issue a ```reboot``` command
+* **Login once again** as a ```root``` user.
+* **Install initial dependencies** ```pacman -S wget git sudo neovim base-devel firefox``` 
+
 
 ## Step 3: Create User Account
 
@@ -82,39 +75,7 @@ Omarchy may provide a recommended mirrorlist during install, but it will not sil
 
 If you want to force a full overwrite you can either run the helper with `--force` and/or `--backup` to keep a timestamped backup, or set the environment variable `OMARCHY_FORCE_MIRROR_OVERWRITE=1` during install.
 
-## Changes since v0.1.0
-
-A few notable improvements have been added since v0.1.0. These are safe, tested, and meant to make installation and first-run smoother on Apple Silicon (ARM) systems:
-
-- ARM mirror enhancements
-   - Auto-detects country (from timezone) and tests mirrors before applying.
-   - Supports many more regional mirrors with primary/fallback entries and connectivity checks.
-   - Runs automatically during the Omarchy preflight on aarch64 systems and creates backups by default.
-   - Files: `install/helpers/set-arm-mirrors.sh`, `install/preflight/arm-mirrors.sh`, `install/preflight/all.sh`, `install/helpers/all.sh`.
-
-- Timezone detection & setup
-   - Automatic timezone detection (IP-based via `tzupdate`) with confirmation and graceful fallbacks.
-   - Interactive/manual selection, first-run reminders, and Waybar/menu integration for easy updates.
-   - New commands: `bin/omarchy-cmd-tzupdate-enhanced`, `bin/omarchy-cmd-tzupdate-manual`.
-   - Files: `install/config/timezone-detection.sh`, `install/first-run/timezone.sh`, `install/config/timezones.sh`, and related menu/waybar wiring.
-
-- Menu & UX
-   - The Omarchy Mac Menu has moved to a `fuzzel` frontend for improved aarch64 stability and performance.
-   - Menu now exposes timezone and update helpers for easier access.
-
-- Mirrorlist & safety
-   - Mirrorlist handling is conservative: the installer merges recommended servers into existing `/etc/pacman.d/mirrorlist` by default and only overwrites when explicitly requested (or when `OMARCHY_FORCE_MIRROR_OVERWRITE=1` is set).
-   - A `fix-mirrors.sh` helper is available to repair mirror issues during install.
-
-These changes are additive and intended to preserve existing workflows while improving reliability for new installs.
-
-## Boot Loop Recovery
-
-In case you end up in a Boot Loop, here's the solution:
-
-1. **Don't panic!**
-2. **Follow this guide** – [https://support.apple.com/en-us/108900](https://support.apple.com/en-us/108900)
-
+<!--
 ---
 
 New updates coming soon...
@@ -125,9 +86,11 @@ Join [Omarchy Mac Discord server](https://discord.gg/KNQRk7dMzy) for updates and
 
 - Please consider donation-  [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/malik2015no)
 
+-->
+
 ## Acknowledgements
-- Thanks to [Asahi Linux](https://asahilinux.org/) and [Asahi Alarm](https://asahi-alarm.org/) for making Linux possible on M1/M2 Macs
-- Thanks to [DHH](https://github.com/dhh) for creating Omarchy
+
+Thanks [DHH](https://github.com/dhh) for creating Omarchy, and [Naeem Malik](https://github.com/malik-na) for Omarchy-Mac.
 
 ## Contributors
 
