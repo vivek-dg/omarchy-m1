@@ -88,19 +88,13 @@ EOL
 # Add architecture-specific repositories
 if [[ "$PACMAN_ARCH" == "aarch64" ]]; then
 cat >> /tmp/pacman.conf << 'AARCH64_REPOS'
-[asahi-alarm]
-Include = /etc/pacman.d/mirrorlist.asahi-alarm
-
 [core]
 Include = /etc/pacman.d/mirrorlist
 
 [extra]
 Include = /etc/pacman.d/mirrorlist
 
-[alarm]
-Include = /etc/pacman.d/mirrorlist
-
-[aur]
+[community]
 Include = /etc/pacman.d/mirrorlist
 AARCH64_REPOS
 else
