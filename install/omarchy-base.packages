@@ -1,18 +1,13 @@
 # Omarchy core package list installed via install/packages.sh
 # This file is also used by the ISO builder when determining needs
 
-
-
 # --- Omarchy core package list ---
 # These packages are always installed (required for a working system):
 gum
 mesa
 mesa-utils
 mesa-demos
-fwupd
 nvme-cli
-grub
-efibootmgr
 alacritty
 avahi
 bash-completion
