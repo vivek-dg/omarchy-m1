@@ -96,6 +96,12 @@ Include = /etc/pacman.d/mirrorlist
 
 [community]
 Include = /etc/pacman.d/mirrorlist
+
+[alarm]
+Include = /etc/pacman.d/mirrorlist
+
+[aur]
+Include = /etc/pacman.d/mirrorlist
 AARCH64_REPOS
 else
 cat >> /tmp/pacman.conf << 'X86_64_REPOS'
