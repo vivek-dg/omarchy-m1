@@ -1,6 +1,6 @@
 <!-- <img width="2560" height="1600" alt="screenshot-2025-09-28_11-19-38" src="https://github.com/user-attachments/assets/dbce832d-4054-4fbb-8057-e521be4859f8" /> -->
 
-# Omarchy-M1 installation steps
+# Omarchy-M1 Parallels installation steps
 
 _Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBooks M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
 
@@ -20,7 +20,7 @@ After installation, boot into Arch Linux and perform the initial setup:
 * **Upgrade Arch** to the latest verion with ```pacman -Syyu```
 * **Reboot** Once the upgrade completes, issue a ```reboot``` command
 * **Login once again** as a ```root``` user.
-* **Install initial dependencies** ```pacman -S wget git sudo neovim base-devel firefox``` 
+* **Install initial dependencies** ```pacman -S git sudo neovim base-devel``` 
 
 
 ## Step 3: Create User Account
@@ -45,9 +45,9 @@ As your new user, set up the AUR helper and install Omarchy Mac:
    makepkg -si
    ```
 
-2. **Clone and setup Omarchy Mac**:
+3. **Clone and setup Omarchy**:
    ```bash
-   git clone https://github.com/malik-na/omarchy-mac.git ~/.local/share/omarchy
+   git clone https://github.com/vivek-dg/omarchy-m1.git ~/.local/share/omarchy
    cd ~/.local/share/omarchy
    bash install.sh
    ```
