@@ -2,7 +2,7 @@
 
 # Omarchy-M1 Parallels installation steps
 
-_Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBooks M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
+_Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBook M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
 
 ## Step 1: Install Arch Linux Parallels (M1) VM
 
@@ -17,37 +17,43 @@ There is existing documentation on installing Arch Linux on https://wiki.archlin
 After installation, boot into Arch Linux and perform the initial setup:
 
 * **Login** provide ```root``` for the user and ```123``` for password based on the default config on the image
-* **Upgrade Arch** to the latest verion with ```pacman -Syyu```
+* **Upgrade Arch** to the latest version with ```pacman -Syyu```
 
-*** At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not able to build. Fix them with the next section. 
+### At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not able to build. Fix them with the next section. 
 
 ## Step 3: Fix the Upgrade issues
 **I had the following issues**
 - The Parallels kernel modules (from parallels-tools 18.0.0.53049) fail to build against the new kernel 6.16.7-1-aarch64-ARCH.
 - The build log showed kernel API breakages (e.g., iowrite64(...) pointer type change and get_user_pages(...) arg count change), which means this Tools version isn’t compatible with 6.16.x:
-```error: passing argument 2 of ‘iowrite64’ makes pointer from integer
+```bash
+error: passing argument 2 of ‘iowrite64’ makes pointer from integer
 error: too many arguments to function ‘get_user_pages’
-(from prl_tg/Toolgate/Guest/Linux/prl_tg/* in make.log)```
+(from prl_tg/Toolgate/Guest/Linux/prl_tg/* in make.log)
+```
 - The right headers installed (linux-aarch64-headers 6.16.7-1), so this isn’t a “missing headers” issue.
 - Running an old kernel (uname -a shows 5.19.4-1), but installed 6.16.7-1.
 - If you reboot into 6.16.7 now, Parallels features that need those modules (e.g., shared folders /mnt/psf, time sync, clipboard) will likely stop working until the modules can build.
-The dbus-broker.service message was just a reload timeout during the transaction (not a persistent crash); the journal shows a reload that timed out and was killed. This is usually harmless after the upgrade finishes.
+- The dbus-broker.service message is just a reload timeout during the transaction (not a persistent crash); the journal shows a reload that timed out and was killed. This is usually harmless after the upgrade finishes.
 
 **To fix them, I did the following:**
 Install newer Tools that supports Linux 6.16 on aarch64, that will fix it cleanly.
 - **Remove the old DKMS entries (optional cleanup):**
-```sudo dkms remove parallels-tools/18.0.0.53049 --all || true
+```bash
+sudo dkms remove parallels-tools/18.0.0.53049 --all || true
 sudo dkms remove parallels-tools/17.1.3.51565 --all || true
-sudo dkms remove parallels-tools/17.1.1.51537 --all || true```
+sudo dkms remove parallels-tools/17.1.1.51537 --all || true
+```
 
 - **Install dependencies**
 pacman -S sudo base-devel
 - **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
 - **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install-gui`. You should see the progress dispalyed as text.
 - **Verify dbus-broker warning**
-```sudo systemctl daemon-reload
+```bash
+sudo systemctl daemon-reload
 sudo systemctl restart dbus-broker
-sudo systemctl status dbus-broker --no-pager```
+sudo systemctl status dbus-broker --no-pager
+```
 If it’s active/running, you can ignore the earlier warning.
 
 * **Reboot** Once the upgrade completes, issue a ```reboot``` command
@@ -63,7 +69,7 @@ Create a new user account and configure sudo access:
 2. **Set password** - `passwd <username>`
 3. **Configure sudo** - `EDITOR=nvim visudo`
 4. **Enable wheel group** - Uncomment `%wheel ALL=(ALL:ALL) ALL`
-5. **Save and exit** - :wq
+5. **Save and exit** - `:wq`
 6. **Switch to new user** - `su - <username>`
 
 ## Step 5: Install AUR Helper and Omarchy
@@ -88,12 +94,19 @@ As your new user, set up the AUR helper and install Omarchy Mac:
 
 **Note**: If mirrors break during installation, run `bash fix-mirrors.sh` then run `install.sh` again.
 
+<!--
+**Reload Daemon**
+After the installation completes, open Alacritty and try to mount cdrom for Parallels tools
+
+`sudo mount /dev/cdrom /mnt/`. If that fails, then based on the warning and hint, run `sudo systemctl daemon-reload`
+-->
+
 
 ## Omarchy Mac Menu
 
 Omarchy Mac now includes the **Omarchy Mac Menu** by default, which replaces Walker with fuzzel for better aarch64 compatibility and performance. The menu system uses fuzzel as the frontend while maintaining all the original functionality.
 
-Key improvements:
+**Key improvements:**
 - Better performance on aarch64 systems (Apple Silicon Macs)
 - Fuzzel-based frontend for improved stability
 - Maintains all original omarchy menu functionality
