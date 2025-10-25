@@ -17,7 +17,7 @@ There is existing documentation on installing Arch Linux on https://wiki.archlin
 After installation, boot into Arch Linux and perform the initial setup:
 
 * **Login** provide ```root``` for the user and ```123``` for password based on the default config on the image
-* **Upgrade Arch** to the latest verion with ```pacman -Syu```
+* **Upgrade Arch** to the latest verion with ```pacman -Syyu```
 * **Reboot** Once the upgrade completes, issue a ```reboot``` command
 * **Login once again** as a ```root``` user.
 * **Install initial dependencies** ```pacman -S wget git sudo neovim base-devel firefox``` 
