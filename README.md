@@ -8,16 +8,17 @@ _Disclaimer: Absolutely zero warranty or promises that this would work. This gui
 
 There is existing documentation on installing Arch Linux on https://wiki.archlinux.org/title/Parallels_Desktop. We're interested in the prebuilt VM from 2022. The idea is to use that as a base and then build on it to avoid the painful process of installing Arch by hand.
 
-* **Download the VM** https://pkgbuild.com/~tpowa/parallels/5.19.x/
-* **Copy the file** named 'Arch Linux Parallels Desktop.pvm' into your ~/Parallels directory
-* **Open the .pvm file in Parallels** Open the Parallels Desktop application, go to File > Open, and select the file from your computer. You can also simply double-click the .pvm file to open it automatically, or drag and drop it onto the Parallels Control Center.
+- **Download the VM** https://pkgbuild.com/~tpowa/parallels/5.19.x/
+- **Copy the file** named 'Arch Linux Parallels Desktop.pvm' into your ~/Parallels directory
+- **Open the .pvm file in Parallels** Open the Parallels Desktop application, go to File > Open, and select the file from your computer. You can also simply double-click the .pvm file to open it automatically, or drag and drop it onto the Parallels Control Center.
 
 ## Step 2: Initial Arch Linux Setup
 
 After installation, boot into Arch Linux and perform the initial setup:
 
-* **Login** provide ```root``` for the user and ```123``` for password based on the default config on the image
-* **Upgrade Arch** to the latest version with ```pacman -Syyu```
+- **Login** provide `root` for the user and `123` for password based on the default config on the image
+- **Update to a better password** `passwd root`
+- **Upgrade Arch** to the latest version with `pacman -Syyu`
 
 ### At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not able to build. Fix them with the next section. 
 
@@ -45,9 +46,9 @@ sudo dkms remove parallels-tools/17.1.1.51537 --all || true
 ```
 
 - **Install dependencies**
-pacman -S sudo base-devel
+`pacman -S sudo base-devel`
 - **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
-- **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install`. You should see the progress dispalyed as text.
+- **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install`. You should see the progress dispalyed as text. If you need additional details, please check [How to install Parallels Tools in Linux virtual machine](https://kb.parallels.com/en/129740)
 - **Verify dbus-broker warning**
 ```bash
 sudo systemctl daemon-reload
@@ -56,9 +57,9 @@ sudo systemctl status dbus-broker --no-pager
 ```
 If it’s active/running, you can ignore the earlier warning.
 
-* **Reboot** Once the upgrade completes, issue a ```reboot``` command
-* **Login once again** as a ```root``` user.
-* **Install initial dependencies** ```pacman -S git sudo neovim base-devel``` 
+- **Reboot** Once the upgrade completes, issue a `reboot` command
+- **Login once again** as a `root` user.
+- **Install initial dependencies** `pacman -S git sudo neovim base-devel` 
 
 
 ## Step 4: Create User Account
