@@ -47,7 +47,7 @@ sudo dkms remove parallels-tools/17.1.1.51537 --all || true
 - **Install dependencies**
 pacman -S sudo base-devel
 - **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
-- **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install-gui`. You should see the progress dispalyed as text.
+- **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install`. You should see the progress dispalyed as text.
 - **Verify dbus-broker warning**
 ```bash
 sudo systemctl daemon-reload
