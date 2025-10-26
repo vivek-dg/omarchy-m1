@@ -100,8 +100,8 @@ Join [Omarchy Mac Discord server](https://discord.gg/KNQRk7dMzy) for updates and
 - If you wish to donate-  [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/malik2015no)
 
 ## Acknowledgements
-
-Thanks [DHH](https://github.com/dhh) for creating Omarchy.
+- Thanks to [Asahi Linux](https://asahilinux.org/) and [Asahi Alarm](https://asahi-alarm.org/) for making Linux possible on M1/M2 Macs
+- Thanks to [DHH](https://github.com/dhh) for creating Omarchy
 
 ## Contributors
 
