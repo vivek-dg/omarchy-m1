@@ -84,12 +84,10 @@ As your new user, set up the AUR helper and install Omarchy Mac:
    makepkg -si
    ```
 
-3. **Clone and setup Omarchy**:
-   ```bash
-   git clone https://github.com/vivek-dg/omarchy-m1.git ~/.local/share/omarchy
-   cd ~/.local/share/omarchy
-   bash install.sh
-   ```
+2. **Install Omarchy**:
+```bash
+  curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/boot.sh
+```
 
    And you're done! Now, please wait for the installation to complete and enter password when required.
 
