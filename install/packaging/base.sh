@@ -75,10 +75,12 @@ if (( ${#failed_packages[@]} > 0 )); then
 		echo "  - $pkg"
 	done
 	echo "==============================="
-	echo "If you need help or want to request support for missing packages, contact @tiredkebab on X (Twitter)."
+	# echo "If you need help or want to request support for missing packages, contact @tiredkebab on X (Twitter)."
+	echo "If you need help or want to request support for missing packages, visit https://github.com/vivek-dg/omarchy-m1 and file a ticket."
 else
 	echo "\e[32mAll packages installed successfully!\e[0m"
 fi
 
 echo
-echo "[Omarchy] Installation complete. For troubleshooting, see the install log. For support, contact @tiredkebab on X (Twitter)."
+# echo "[Omarchy] Installation complete. For troubleshooting, see the install log. For support, contact @tiredkebab on X (Twitter)."
+echo "[Omarchy] Installation complete. For troubleshooting, see the install log. For support, visit https://github.com/vivek-dg/omarchy-m1 and file a ticket."

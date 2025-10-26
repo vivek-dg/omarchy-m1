@@ -6,7 +6,8 @@ abort() {
   echo
   gum confirm "Proceed anyway? (Not recommended. You may encounter issues and support may not be available.)" || {
     echo -e "\e[33m[Omarchy] Installation aborted. Please review the requirement above.\e[0m"
-    echo -e "For help, contact @tiredkebab on X (Twitter)."
+    # echo -e "For help, contact @tiredkebab on X (Twitter)."
+    echo -e "For help, visit https://github.com/vivek-dg/omarchy-m1"
     exit 1
   }
   echo -e "\e[33m[Omarchy] Continuing at your own risk...\e[0m"
