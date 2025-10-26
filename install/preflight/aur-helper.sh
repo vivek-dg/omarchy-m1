@@ -26,6 +26,15 @@ fi
 
 echo "✅ pacman detected and functional."
 
+# Prime sudo (prevents timeouts during long runs)
+sudo -v || { echo "❌ sudo required"; exit 1; }
+( while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done ) 2>/dev/null &
+
+# TLS sanity (harmless if repeated)
+sudo pacman -S --needed --noconfirm ca-certificates ca-certificates-mozilla openssl git go base-devel
+sudo update-ca-trust || true
+sudo timedatectl set-ntp true || true
+
 # --- now ensure yay exists ---
 if ! command -v yay >/dev/null 2>&1; then
   echo "Installing yay..."
@@ -33,9 +42,13 @@ if ! command -v yay >/dev/null 2>&1; then
   if sudo pacman -S --needed --noconfirm yay; then
     echo "yay installed from repo."
   else
-    # Fallback to AUR binary package if repo one isn't there
-    tmpdir="$(mktemp -d)"; trap 'rm -rf "$tmpdir"' EXIT
-    git clone https://aur.archlinux.org/yay-bin.git "$tmpdir/yay-bin"
-    ( cd "$tmpdir/yay-bin" && makepkg -si --noconfirm )
+    # GitHub build (no AUR; reliable on ARM)
+    export GOPATH="${HOME}/go"; export PATH="${HOME}/go/bin:${PATH}"
+    go install github.com/Jguer/yay/v12@latest
+    sudo install -m 0755 "${HOME}/go/bin/yay" /usr/local/bin/yay
   fi
 fi
+
+
+command -v yay >/dev/null || { echo "❌ yay not installed (AUR disabled & GitHub build failed)"; exit 1; }
+echo "✅ yay ready (no AUR clone used)"
