@@ -1,9 +1,9 @@
 
 ![IMG_5776](https://github.com/user-attachments/assets/86b2651c-4b49-4ec5-ae78-023b01e46a15)
 
-# Omarchy-mac installation steps
+# Omarchy Mac installation steps
 
-_Disclaimer: This guide is intended for Apple Silicon MacBooks M1/M2 and has only been tested on the M1 variant released in 2020. It is advised that you follow the instructions in the manual very carefully lest you risk bricking the MacBook or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
+_Disclaimer: This guide is intended for Apple Silicon Macs M1/M2. It is advised that you follow the instructions in the manual very carefully lest you risk bricking the Mac or getting stuck in a Boot Loop (I will provide a fix for that as well in the end)._
 
 ## Step 1: Install Arch minimal from Asahi Alarm
 
