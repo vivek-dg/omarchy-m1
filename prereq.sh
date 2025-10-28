@@ -54,6 +54,9 @@ main() {
 		pacman --noconfirm -S sudo
 	fi
 
+	echo "Suppress audit messages until reboot..."
+	sudo auditctl -e 0
+
 	# 2) Create user 'omuser' with password '123' and sudo rights
 	create_user_if_missing "omuser" "123"
 	enable_wheel_sudo_nopasswd
