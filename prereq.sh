@@ -10,59 +10,80 @@
 set -euo pipefail
 
 require_root() {
-  if [[ ${EUID:-$(id -u)} -ne 0 ]]; then
-    echo "This script must be run as root." >&2
-    exit 1
-  fi
+	if [[ ${EUID:-$(id -u)} -ne 0 ]]; then
+		echo "This script must be run as root." >&2
+		exit 1
+	fi
 }
 
 pkg_installed() {
-  pacman -Q "$1" &>/dev/null
+	pacman -Q "$1" &>/dev/null
 }
 
 enable_wheel_sudo_nopasswd() {
-  # Enable wheel group in sudoers with NOPASSWD if not already enabled
-  if ! grep -Eq '^\s*%wheel\s+ALL=\(ALL:ALL\)\s+NOPASSWD:\s*ALL' /etc/sudoers; then
-    # Keep a backup and append a safe include
-    cp -n /etc/sudoers /etc/sudoers.bak
-    echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
-    visudo -c >/dev/null
-  fi
+	# Enable wheel group in sudoers with NOPASSWD if not already enabled
+	if ! grep -Eq '^\s*%wheel\s+ALL=\(ALL:ALL\)\s+NOPASSWD:\s*ALL' /etc/sudoers; then
+		# Keep a backup and append a safe include
+		cp -n /etc/sudoers /etc/sudoers.bak
+		echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
+		visudo -c >/dev/null
+	fi
 }
 
 create_user_if_missing() {
-  local user="$1" pass="$2"
-  if ! id -u "$user" &>/dev/null; then
-    useradd -m -G wheel -s /bin/bash "$user"
-    echo "${user}:${pass}" | chpasswd
-  else
-    # Ensure user is in wheel (for sudo) and has bash
-    usermod -aG wheel "$user"
-    chsh -s /bin/bash "$user" >/dev/null || true
-  fi
+	local user="$1" pass="$2"
+	if ! id -u "$user" &>/dev/null; then
+		useradd -m -G wheel -s /bin/bash "$user"
+		echo "${user}:${pass}" | chpasswd
+	else
+		# Ensure user is in wheel (for sudo) and has bash
+		usermod -aG wheel "$user"
+		chsh -s /bin/bash "$user" >/dev/null || true
+	fi
 }
 
 main() {
-  require_root
+	require_root
 
-  # 0) Refresh pacman databases, upgrade system (no extra packages)
-  pacman --noconfirm -Syy
-  pacman --noconfirm -Su
+	# 0) Refresh pacman databases, upgrade system (no extra packages)
+	pacman --noconfirm -Syy
+	pacman --noconfirm -Su
 
-  # 1) Ensure sudo is present (Omarchy-M1 will install the rest)
-  if ! pkg_installed sudo; then
-    pacman --noconfirm -S sudo
-  fi
+	# 1) Ensure sudo is present (Omarchy-M1 will install the rest)
+	if ! pkg_installed sudo; then
+		pacman --noconfirm -S sudo
+	fi
 
-  # 2) Create user 'omuser' with password '123' and sudo rights
-  create_user_if_missing "omuser" "123"
-  enable_wheel_sudo_nopasswd
+	# 2) Create user 'omuser' with password '123' and sudo rights
+	create_user_if_missing "omuser" "123"
+	enable_wheel_sudo_nopasswd
 
-  echo "✅ System updated, user 'omuser' ready with password '123' and sudo access."
-  echo "➡️  Switching to 'omuser' login shell now. Run your Omarchy-M1 installer from there."
+	echo "✅ System updated, user 'omuser' ready with password '123' and sudo access."
+	echo "➡️  Switching to 'omuser' login shell now. Run your Omarchy-M1 installer from there."
 
-  # 3) Drop into the user’s login shell
-  exec su - omuser
+	# 3) Drop into the user’s login shell
+	# Re-attach to the terminal if we were run via a pipe
+	if [ -e /dev/tty ]; then
+		exec </dev/tty >/dev/tty 2>&1
+	fi
+
+	# Prefer sudo (works well under sudo/root and respects PAM)
+	if command -v sudo >/dev/null 2>&1; then
+		# If we have a TTY, drop in; otherwise just print instructions
+		if [ -t 0 ] && [ -t 1 ]; then
+			exec sudo -iu omuser # interactive login shell
+		else
+			echo "Now run: sudo -iu omuser"
+		fi
+	else
+		# Fallback to su
+		if [ -t 0 ] && [ -t 1 ]; then
+			exec su - omuser
+		else
+			echo "Now run: su - omuser"
+		fi
+	fi
+
 }
 
 main "$@"
