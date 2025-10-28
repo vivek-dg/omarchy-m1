@@ -24,7 +24,6 @@ sudo pacman -Syu --noconfirm --needed sudo git
 sudo -v || { echo "❌ sudo required"; exit 1; }
 ( while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done ) 2>/dev/null &
 
-
 # Use custom repo if specified, otherwise default to vivek-dg/omarchy-m1
 OMARCHY_REPO="${OMARCHY_REPO:-vivek-dg/omarchy-m1}"
 

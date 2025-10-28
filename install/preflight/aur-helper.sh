@@ -26,12 +26,8 @@ fi
 
 echo "✅ pacman detected and functional."
 
-# Prime sudo (prevents timeouts during long runs)
-sudo -v || { echo "❌ sudo required"; exit 1; }
-( while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done ) 2>/dev/null &
-
 # TLS sanity (harmless if repeated)
-sudo pacman -S --needed --noconfirm ca-certificates ca-certificates-mozilla openssl git go base-devel
+sudo pacman -S --needed --noconfirm ca-certificates ca-certificates-mozilla openssl go base-devel
 sudo update-ca-trust || true
 sudo timedatectl set-ntp true || true
 
