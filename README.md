@@ -46,7 +46,6 @@ mkdir -p /mnt/cdrom
 sudo mount /dev/cdrom /mnt/cdrom
 /mnt/cdrom/install
 ```
-You should see the progress dispalyed as text. If you need additional details, please check the link from the previous step.
 
 ## Omarchy Mac Menu
 
