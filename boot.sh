@@ -21,8 +21,18 @@ sudo pacman -Syu --noconfirm --needed sudo git
 
 # Validate sudo access and refresh timestamp to minimize password prompts
 # Prime sudo (prevents timeouts during long runs)
-sudo -v || { echo "❌ sudo required"; exit 1; }
-( while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done ) 2>/dev/null &
+sudo -v || {
+	echo "❌ sudo required"
+	exit 1
+}
+(while true; do
+	sudo -n true
+	sleep 60
+	kill -0 "$$" || exit
+done) 2>/dev/null &
+
+echo "Suppress audit messages until reboot on arch for parallels..."
+sudo auditctl -e 0
 
 # Use custom repo if specified, otherwise default to vivek-dg/omarchy-m1
 OMARCHY_REPO="${OMARCHY_REPO:-vivek-dg/omarchy-m1}"
@@ -35,9 +45,9 @@ git clone "https://github.com/${OMARCHY_REPO}.git" ~/.local/share/omarchy >/dev/
 OMARCHY_REF="${OMARCHY_REF:-main}"
 echo -e "\e[32mUsing branch: $OMARCHY_REF\e[0m"
 if [[ $OMARCHY_REF != "main" ]]; then
-  cd ~/.local/share/omarchy
-  git fetch origin "${OMARCHY_REF}" && git checkout "${OMARCHY_REF}"
-  cd -
+	cd ~/.local/share/omarchy
+	git fetch origin "${OMARCHY_REF}" && git checkout "${OMARCHY_REF}"
+	cd -
 fi
 
 echo -e "\nInstallation starting..."
