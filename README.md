@@ -39,8 +39,6 @@ curl -sL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/main/boot.sh | ba
 
 The Parallels tools fail since kernel support even with the latest Parallels tools as of writing this file is only 6.13. Arch ARM64 builds don't even have linux-lts, they don't really make it easy to install 6.13 or any other older kernel version. Even if you install the Parallels Tools, they will most likely just not work as expected for many/all features. I just installed it to get rid of those errors.
 
-- **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
-- **Install dependencies** with `pacman -S sudo`
 - **Load the Parallel Tools ISO in the CD/DVD slot** Follow the instructions [How to install Parallels Tools in Linux virtual machine](https://kb.parallels.com/en/129740) from step 1 to 3 to load the ISO image for the parallels tools for ARM Linux.
 - **Install Parallels Tools**
 ```bash
