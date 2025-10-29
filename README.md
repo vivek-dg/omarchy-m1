@@ -17,14 +17,10 @@ There is existing documentation on installing Arch Linux on https://wiki.archlin
 After installation, boot into Arch Linux and perform the initial setup:
 - **Login** provide `root` for the user and `123` for password based on the default config on the image
 - **Update to a better password** `passwd root`
-- **Upgrade Arch** to the latest version with `pacman -Syyu`
 
-*At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not being built against the latest kernel. Instructions to fix them optionally is provided towards the end.*
+## Step 3: Create User Account and Upgrade Arch
 
-
-## Step 3: Create User Account
-
-**The following script** automatically creates a user named `omuser` with password `123` and `sudo` permissions:
+**The following script** automatically creates a user named `omuser` with password `123` and `sudo` permissions. It also refreshes pacman databases, and upgrades system (no extra packages)
 ```bash
 /bin/bash -c "$(curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/prereq.sh)"
 ```
