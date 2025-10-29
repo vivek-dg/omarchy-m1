@@ -15,91 +15,44 @@ There is existing documentation on installing Arch Linux on https://wiki.archlin
 ## Step 2: Initial Arch Linux Setup
 
 After installation, boot into Arch Linux and perform the initial setup:
-
 - **Login** provide `root` for the user and `123` for password based on the default config on the image
 - **Update to a better password** `passwd root`
 - **Upgrade Arch** to the latest version with `pacman -Syyu`
 
 ### At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not able to build. Fix them with the next section. 
 
-## Step 3: Fix the Upgrade issues
-**I had the following issues**
-- The Parallels kernel modules (from parallels-tools 18.0.0.53049) fail to build against the new kernel 6.16.7-1-aarch64-ARCH.
-- The build log showed kernel API breakages (e.g., iowrite64(...) pointer type change and get_user_pages(...) arg count change), which means this Tools version isn’t compatible with 6.16.x:
-```bash
-error: passing argument 2 of ‘iowrite64’ makes pointer from integer
-error: too many arguments to function ‘get_user_pages’
-(from prl_tg/Toolgate/Guest/Linux/prl_tg/* in make.log)
-```
-- The right headers installed (linux-aarch64-headers 6.16.7-1), so this isn’t a “missing headers” issue.
-- Running an old kernel (uname -a shows 5.19.4-1), but installed 6.16.7-1.
-- If you reboot into 6.16.7 now, Parallels features that need those modules (e.g., shared folders /mnt/psf, time sync, clipboard) will likely stop working until the modules can build.
-- The dbus-broker.service message is just a reload timeout during the transaction (not a persistent crash); the journal shows a reload that timed out and was killed. This is usually harmless after the upgrade finishes.
 
-**To fix them, I did the following:**
-Install newer Tools that supports Linux 6.16 on aarch64, that will fix it cleanly.
-- **Remove the old DKMS entries (optional cleanup):**
+## Step 3: Create User Account
+
+**The following script** automatically creates a user named `omuser` with password `123` and `sudo` permissions:
 ```bash
-sudo dkms remove parallels-tools/18.0.0.53049 --all || true
-sudo dkms remove parallels-tools/17.1.3.51565 --all || true
-sudo dkms remove parallels-tools/17.1.1.51537 --all || true
+/bin/bash -c "$(curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/prereq.sh)"
 ```
 
-- **Install dependencies**
-`pacman -S sudo base-devel`
-- **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
-- **Install Parallels Tools** `sudo mount /dev/cdrom /mnt/` followed by `/mnt/install`. You should see the progress dispalyed as text. If you need additional details, please check [How to install Parallels Tools in Linux virtual machine](https://kb.parallels.com/en/129740)
-- **Verify dbus-broker warning**
+## Step 4: Install Omarchy
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl restart dbus-broker
-sudo systemctl status dbus-broker --no-pager
-```
-If it’s active/running, you can ignore the earlier warning.
-
-- **Reboot** Once the upgrade completes, issue a `reboot` command
-- **Login once again** as a `root` user.
-- **Install initial dependencies** `pacman -S git sudo neovim base-devel` 
-
-
-## Step 4: Create User Account
-
-Create a new user account and configure sudo access:
-
-1. **Create user** - `useradd -m -G wheel <username>`
-2. **Set password** - `passwd <username>`
-3. **Configure sudo** - `EDITOR=nvim visudo`
-4. **Enable wheel group** - Uncomment `%wheel ALL=(ALL:ALL) ALL`
-5. **Save and exit** - `:wq`
-6. **Switch to new user** - `su - <username>`
-
-## Step 5: Install AUR Helper and Omarchy
-
-As your new user, set up the AUR helper and install Omarchy Mac:
-
-1. **Install yay AUR helper**:
-   ```bash
-   git clone https://aur.archlinux.org/yay.git
-   cd yay
-   makepkg -si
-   ```
-
-2. **Install Omarchy**:
-```bash
-  curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/boot.sh
+/bin/bash -c "$(curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/boot.sh)"
 ```
 
    And you're done! Now, please wait for the installation to complete and enter password when required.
 
 **Note**: If mirrors break during installation, run `bash fix-mirrors.sh` then run `install.sh` again.
 
-<!--
-**Reload Daemon**
-After the installation completes, open Alacritty and try to mount cdrom for Parallels tools
 
-`sudo mount /dev/cdrom /mnt/`. If that fails, then based on the warning and hint, run `sudo systemctl daemon-reload`
--->
+## Step 5: Install Parallels Tools - Optional
 
+The Parallels tools fail since kernel support even with the latest Parallels tools as of writing this file is only 6.13. Arch ARM64 builds don't even have linux-lts, they don't really make it easy to install 6.13 or any other older kernel version. Even if you install the Parallels Tools, they will most likely just not work as expected for many/all features. I just installed it to get rid of those errors.
+
+- **Reboot** with `reboot` command. After the reboot, and login, you won't see anything under `ls /mnt/psf` as expected.
+- **Install dependencies** with `pacman -S sudo`
+- **Load the Parallel Tools ISO in the CD/DVD slot** Follow the instructions [How to install Parallels Tools in Linux virtual machine](https://kb.parallels.com/en/129740) from step 1 to 3 to load the ISO image for the parallels tools for ARM Linux.
+- **Install Parallels Tools**
+```bash
+mkdir -p /mnt/cdrom
+sudo mount /dev/cdrom /mnt/cdrom
+/mnt/cdrom/install
+```
+You should see the progress dispalyed as text. If you need additional details, please check the link from the previous step.
 
 ## Omarchy Mac Menu
 
