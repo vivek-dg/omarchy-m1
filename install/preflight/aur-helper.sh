@@ -37,20 +37,32 @@ sudo sed -i 's/^#*BUILDENV=.*/BUILDENV=(!distcc color ccache)/' /etc/makepkg.con
 echo 'PKGDEST=/var/cache/pacman/pkgbuild' | sudo tee -a /etc/makepkg.conf
 echo 'SRCDEST=/var/cache/pacman/src' | sudo tee -a /etc/makepkg.conf
 
-# --- ensure pkgbuild directories exist and are writable ---
-if [ "$(id -u)" -eq 0 ]; then
-	mkdir -p /var/cache/pacman/{pkgbuild,src}
-	chown -R "$(logname 2>/dev/null || echo root)":"$(logname 2>/dev/null || echo root)" /var/cache/pacman/{pkgbuild,src}
-else
-	sudo mkdir -p /var/cache/pacman/{pkgbuild,src}
-	sudo chown -R "$USER":"$USER" /var/cache/pacman/{pkgbuild,src}
+# --- Optional but recommended: Enable ccache ---
+if ! pacman -Qi ccache >/dev/null 2>&1; then
+	echo "[Omarchy] Installing ccache for faster AUR builds..."
+	if [ "$(id -u)" -eq 0 ]; then
+		pacman -S --needed --noconfirm ccache
+	else
+		sudo pacman -S --needed --noconfirm ccache
+	fi
 fi
 
-# # additional tuning (optional but recommended)
-# sudo pacman -S ccache
-# echo 'export CCACHE_DIR=/var/cache/ccache' | sudo tee -a /etc/makepkg.conf
-# sudo mkdir -p /var/cache/ccache /var/cache/pacman/{pkgbuild,src}
-# sudo chown -R $USER:$USER /var/cache/ccache /var/cache/pacman
+# Configure makepkg to use ccache safely
+if ! grep -q 'BUILDENV=.*ccache' /etc/makepkg.conf; then
+	sudo sed -i 's/^#*BUILDENV=.*/BUILDENV=(!distcc color ccache)/' /etc/makepkg.conf
+fi
+
+# Set up cache directories
+if [ "$(id -u)" -eq 0 ]; then
+	mkdir -p /var/cache/ccache /var/cache/pacman/{pkgbuild,src}
+	chown -R "$(logname 2>/dev/null || echo root)":"$(logname 2>/dev/null || echo root)" /var/cache/ccache /var/cache/pacman
+else
+	sudo mkdir -p /var/cache/ccache /var/cache/pacman/{pkgbuild,src}
+	sudo chown -R "$USER":"$USER" /var/cache/ccache /var/cache/pacman
+fi
+
+# Point ccache to a persistent location
+echo 'export CCACHE_DIR=/var/cache/ccache' | sudo tee -a /etc/makepkg.conf >/dev/null
 
 # --- now ensure yay exists ---
 if ! command -v yay >/dev/null 2>&1; then
