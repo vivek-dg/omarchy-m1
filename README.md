@@ -22,12 +22,12 @@ After installation, boot into Arch Linux and perform the initial setup:
 
 **The following script** automatically creates a user named `omuser` with password `123` and `sudo` permissions. It also refreshes pacman databases, and upgrades system (no extra packages)
 ```bash
-/bin/bash -c "$(curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/prereq.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/raw/refs/heads/main/prereq.sh)"
 ```
 
 ## Step 4: Install Omarchy
 ```bash
-/bin/bash -c "$(curl -fsSL https://github.com/vivek-dg/omarchy-m1/raw/refs/heads/main/boot.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/raw/refs/heads/main/boot.sh)"
 ```
 
    And you're done! Now, please wait for the installation to complete and enter password when required.
