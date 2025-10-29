@@ -37,11 +37,11 @@ sudo sed -i 's/^#*BUILDENV=.*/BUILDENV=(!distcc color ccache)/' /etc/makepkg.con
 echo 'PKGDEST=/var/cache/pacman/pkgbuild' | sudo tee -a /etc/makepkg.conf
 echo 'SRCDEST=/var/cache/pacman/src' | sudo tee -a /etc/makepkg.conf
 
-# additional tuning (optional but recommended)
-sudo pacman -S ccache
-echo 'export CCACHE_DIR=/var/cache/ccache' | sudo tee -a /etc/makepkg.conf
-sudo mkdir -p /var/cache/ccache /var/cache/pacman/{pkgbuild,src}
-sudo chown -R $USER:$USER /var/cache/ccache /var/cache/pacman
+# # additional tuning (optional but recommended)
+# sudo pacman -S ccache
+# echo 'export CCACHE_DIR=/var/cache/ccache' | sudo tee -a /etc/makepkg.conf
+# sudo mkdir -p /var/cache/ccache /var/cache/pacman/{pkgbuild,src}
+# sudo chown -R $USER:$USER /var/cache/ccache /var/cache/pacman
 
 # --- now ensure yay exists ---
 if ! command -v yay >/dev/null 2>&1; then
