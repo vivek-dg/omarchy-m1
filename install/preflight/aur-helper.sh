@@ -37,6 +37,15 @@ sudo sed -i 's/^#*BUILDENV=.*/BUILDENV=(!distcc color ccache)/' /etc/makepkg.con
 echo 'PKGDEST=/var/cache/pacman/pkgbuild' | sudo tee -a /etc/makepkg.conf
 echo 'SRCDEST=/var/cache/pacman/src' | sudo tee -a /etc/makepkg.conf
 
+# --- ensure pkgbuild directories exist and are writable ---
+if [ "$(id -u)" -eq 0 ]; then
+	mkdir -p /var/cache/pacman/{pkgbuild,src}
+	chown -R "$(logname 2>/dev/null || echo root)":"$(logname 2>/dev/null || echo root)" /var/cache/pacman/{pkgbuild,src}
+else
+	sudo mkdir -p /var/cache/pacman/{pkgbuild,src}
+	sudo chown -R "$USER":"$USER" /var/cache/pacman/{pkgbuild,src}
+fi
+
 # # additional tuning (optional but recommended)
 # sudo pacman -S ccache
 # echo 'export CCACHE_DIR=/var/cache/ccache' | sudo tee -a /etc/makepkg.conf
