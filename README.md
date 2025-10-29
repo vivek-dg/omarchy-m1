@@ -19,7 +19,7 @@ After installation, boot into Arch Linux and perform the initial setup:
 - **Update to a better password** `passwd root`
 - **Upgrade Arch** to the latest version with `pacman -Syyu`
 
-### At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not able to build. Fix them with the next section. 
+*At this point, you will see that there are a few errors. These are mainly related to Parallels Tools not being built against the latest kernel. Instructions to fix them optionally is provided towards the end.*
 
 
 ## Step 3: Create User Account
