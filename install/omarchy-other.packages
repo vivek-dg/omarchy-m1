@@ -29,8 +29,9 @@ linux-headers
 macbook12-spi-driver-dkms
 nvidia-dkms
 nvidia-open-dkms
-nvidia-utils
-lib32-nvidia-utils
+# ARM Arch64 doesn't have lib32-* for nvidia on Parallels
+# nvidia-utils
+# lib32-nvidia-utils
 pipewire
 pipewire-alsa
 pipewire-jack
