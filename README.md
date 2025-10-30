@@ -1,5 +1,10 @@
 <!-- <img width="2560" height="1600" alt="screenshot-2025-09-28_11-19-38" src="https://github.com/user-attachments/assets/dbce832d-4054-4fbb-8057-e521be4859f8" /> -->
 
+# !!!!!!BUILDS are currently broken
+Due to an issue with hyprland dependencies, the current builds will fail. It fails with both pacman, and yay (both regular hyprland and hyprland-git). Since this is ARM64, there is no easy fix. You'll need to wait it out.
+
+<img alt="hyprland error due to missing dependencies" src="https://github.com/vivek-dg/omarchy-m1/blob/main/hyprland_error.jpg" />
+
 # Omarchy-M1 Parallels installation steps
 
 _Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBook M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
