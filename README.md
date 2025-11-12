@@ -1,10 +1,5 @@
 <!-- <img width="2560" height="1600" alt="screenshot-2025-09-28_11-19-38" src="https://github.com/user-attachments/assets/dbce832d-4054-4fbb-8057-e521be4859f8" /> -->
 
-# !!!!!!BUILDS are currently broken
-Due to an issue with hyprland dependencies, the current builds will fail. It fails with both pacman, and yay (both regular hyprland and hyprland-git). Since this is ARM64, there is no easy fix. You'll need to wait it out.
-
-<img alt="hyprland error due to missing dependencies" src="https://github.com/vivek-dg/omarchy-m1/blob/main/hyprland_error.jpg" />
-
 # Omarchy-M1 Parallels installation steps
 
 _Disclaimer: Absolutely zero warranty or promises that this would work. This guide is intended for Apple Silicon MacBook M1/M2 and has only been tested on the M1 variant. It is advised that you follow the instructions in the manual very carefully. Since this Parallels, there is no risk of bricking the MacBook or getting stuck in a Boot Loop._
@@ -29,13 +24,16 @@ After installation, boot into Arch Linux and perform the initial setup:
 ```bash
 curl -sL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/main/prereq.sh | bash
 ```
-
+## Step 3a: Install Hyprland with the patch since the regular builds are broken on Pacman
+```bash
+curl -sL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/main/install/patch/hyprland-build.sh | bash
+```
 ## Step 4: Install Omarchy
 ```bash
 curl -sL https://raw.githubusercontent.com/vivek-dg/omarchy-m1/main/boot.sh | bash
 ```
 
-   And you're done! Now, please wait for the installation to complete and enter password when required.
+   And you're done! Now, please wait for the installation to complete and enter password when required. The installation takes a lot more time since arm64 doesn't have prebuilt packages for a many builds.
 
 **Note**: If mirrors break during installation, run `bash fix-mirrors.sh` then run `install.sh` again.
 
